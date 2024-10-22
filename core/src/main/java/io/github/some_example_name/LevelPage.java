@@ -2,6 +2,7 @@ package io.github.some_example_name;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -13,13 +14,13 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import io.github.some_example_name.PauseScreen;
 
-public class LevelPage extends ApplicationAdapter {
+public class LevelPage extends ScreenAdapter {
     private Stage stage;
     private Texture pauseTexture;
     private Level1 level1;
 
     @Override
-    public void create() {
+    public void show() {
         stage = new Stage(new FitViewport(800, 600));
 
         // Background
@@ -79,10 +80,14 @@ public class LevelPage extends ApplicationAdapter {
     }
 
     @Override
-    public void render() {
+    public void render(float delta ) {
         ScreenUtils.clear(0f, 0f, 0f, 1f);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+    }
+    @Override
+    public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
