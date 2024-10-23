@@ -24,7 +24,7 @@ public class SettingsOverlay extends ScreenAdapter {
     private Texture settings_background;
     private ImageButton MuteButton;
 
-
+int first_time=0;
 //    private Slider volumeSlider;
 
     float SCREEN_WIDTH = Gdx.graphics.getWidth();
@@ -102,13 +102,14 @@ public class SettingsOverlay extends ScreenAdapter {
 //               TutorialGame.setScreen(new TutorialGame(TutorialGame));
 //                Setting_stage.clear(); // Clear the settings overlay when close is clicked
                 closeOverlay();
+
             }
         });
 
         Setting_stage.addActor(closeButton);
 
         // LOAD GAME BUTTON
-        LoadGameButton = ImageButton_create("Load_Game.png", "Load_Game.png", 400,150, 0.5f,0.5f);
+        LoadGameButton = ImageButton_create("Load_Game.png", "Load_Game.png", 400,150, 0.5f,0.6f);
 
         LoadGameButton.addListener(new ClickListener() {
             @Override
@@ -123,7 +124,7 @@ public class SettingsOverlay extends ScreenAdapter {
         Setting_stage.addActor(LoadGameButton);
 
         // MUTE BUTTON
-        MuteButton = ImageButton_create("Mute.png", "Mute.png", 400,150, 0.5f,0.5f);
+        MuteButton = ImageButton_create("Mute.png", "Mute.png", 400,150, 0.5f,0.2f);
 
         MuteButton.addListener(new ClickListener() {
             @Override
@@ -151,13 +152,14 @@ public class SettingsOverlay extends ScreenAdapter {
     }
 
     public void render(float delta) {
-        if(isActive) {
+        if(isActive ) {
             batch.begin();
             batch.draw(settings_background, SCREEN_WIDTH/2 - settings_background.getWidth()/2, SCREEN_HEIGHT/2 - settings_background.getHeight()/2 - 40, 500, 600);
             batch.end();
             Setting_stage.act(delta);
             Setting_stage.draw();
         }
+
     }
 
     public void resize(int width, int height) {
@@ -171,6 +173,7 @@ public class SettingsOverlay extends ScreenAdapter {
 
     public void dispose() {
         Setting_stage.dispose();
+
     }
 
     public Stage getStage() {
@@ -182,14 +185,27 @@ public class SettingsOverlay extends ScreenAdapter {
         if (isActive) {
             System.out.println("Setting turned on");
             Gdx.input.setInputProcessor(Setting_stage);
+            Setting_stage.getRoot().setVisible(true); // Show the stage
             System.out.println("Setting turned on - yo");
+
+
         }
     }
 
-    private void closeOverlay() {
-        Setting_stage.clear();  // Clear the settings overlay
+
+//    private void closeOverlay() {
+//        Setting_stage.clear();  // Clear the settings overlay
+//
+//        setActive(false);  // Mark overlay as inactive
+//
+//    }
+
+    protected void closeOverlay() {
         setActive(false);  // Mark overlay as inactive
+        Setting_stage.getRoot().setVisible(false); // Hide the stage without clearing it
     }
+
+
 
     public boolean isActive() {
         return isActive;

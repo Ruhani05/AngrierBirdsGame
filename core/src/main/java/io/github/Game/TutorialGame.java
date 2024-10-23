@@ -104,7 +104,7 @@ public class TutorialGame extends ScreenAdapter {//pages directed (load game,
             @Override
             public void clicked(InputEvent event, float x, float y) {
 //                game.setScreen(new StartGame(game));
-                game.setScreen( new LevelPage());
+                game.setScreen( new LevelPage(game));
             }
         });
 
@@ -175,12 +175,17 @@ public class TutorialGame extends ScreenAdapter {//pages directed (load game,
 
         // SETTINGS BUTTON
         settingsButton = ImageButton_create("settings_button.png", "settings_button.png", 100,98,0.5f,0.5f);
-        settingsButton.addListener(new ClickListener() {
+        settingsButton.addListener(new ClickListener()
+        {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("clicked settings");
-                showSettings = !showSettings;
-                settingsOverlay.setActive(showSettings);
+//                showSettings = !showSettings;
+//                settingsOverlay.setActive(showSettings);
+                if (!settingsOverlay.isActive()) {
+                    showSettings = true;
+                    settingsOverlay.setActive(true);
+                }
                 System.out.println("returned from settings" );
             }
 
@@ -215,7 +220,8 @@ public class TutorialGame extends ScreenAdapter {//pages directed (load game,
             }
 
             // If settings are shown, set input to the settingsOverlay stage and render it
-            if (showSettings && settingsOverlay.isActive()) {
+            if (showSettings && settingsOverlay.isActive() ) {
+                //settingsOverlay.first_time=1;
                 Gdx.input.setInputProcessor(settingsOverlay.getStage());
                 settingsOverlay.render(delta);
             }
