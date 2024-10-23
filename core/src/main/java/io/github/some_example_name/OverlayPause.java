@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 public class OverlayPause extends ScreenAdapter {
     private SpriteBatch batch;
+    private OverlaySaveGame overlaySaveGame;
     private Stage pauseStage;
     private Texture pauseBackground;
     private ImageButton resumeButton;
@@ -27,7 +28,8 @@ public class OverlayPause extends ScreenAdapter {
     public Boolean isActive = false;
     private LevelPage levelPage;
     private SettingsOverlay settingsOverlay;
-    private boolean showSettings = false; // Track whether settings overlay is shown
+    private boolean showSettings = false;
+    private boolean showSave = false;// Track whether settings overlay is shown
 
     float SCREEN_WIDTH = Gdx.graphics.getWidth();
     float SCREEN_HEIGHT = Gdx.graphics.getHeight();
@@ -83,6 +85,13 @@ public class OverlayPause extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("Game Saved!");
+                if (!overlaySaveGame.isActive()) {
+                    showSave = true;
+                    overlaySaveGame.setActive(true);
+                    Gdx.input.setInputProcessor(overlaySaveGame.getStage()); // Set input processor to settings overlay
+                    pauseStage.getRoot().setVisible(false); // Hide pause overlay
+
+                }
             }
         });
 
@@ -130,11 +139,12 @@ public class OverlayPause extends ScreenAdapter {
 
         // Add buttons to the stage
         pauseStage.addActor(resumeButton);
-        pauseStage.addActor(saveButton);
+        //pauseStage.addActor(saveButton);
         pauseStage.addActor(restartButton);
         //pauseStage.addActor(settingsButton);
         pauseStage.addActor(exitButton);
         settingsOverlay = new SettingsOverlay();
+        overlaySaveGame = new OverlaySaveGame();
 
     }
     public void render(float delta) {
@@ -159,6 +169,18 @@ public class OverlayPause extends ScreenAdapter {
                 Gdx.input.setInputProcessor(pauseStage);
                 pauseStage.getRoot().setVisible(true); // Show the pause overlay again
             }
+        } else if (showSave) {
+            if (overlaySaveGame.isActive()) {
+                // Settings are active, set input to settingsOverlay
+                Gdx.input.setInputProcessor(overlaySaveGame.getStage());
+                overlaySaveGame.render(delta);
+            } else {
+                // Settings were active but are now closed, switch back to the pause overlay
+                showSave = false; // Ensure `showSettings` is set to false
+                Gdx.input.setInputProcessor(pauseStage);
+                pauseStage.getRoot().setVisible(true); // Show the pause overlay again
+            }
+
         } else {
             // If settings are not shown, set input to the main pause stage and draw it
             Gdx.input.setInputProcessor(pauseStage);
@@ -203,6 +225,7 @@ public class OverlayPause extends ScreenAdapter {
         batch.dispose();
         pauseBackground.dispose();
         settingsOverlay.dispose();
+        overlaySaveGame.dispose();
     }
 
     public void setActive(boolean active) {
@@ -218,6 +241,7 @@ public class OverlayPause extends ScreenAdapter {
         pauseStage.getRoot().setVisible(false); // Hide the stage without clearing it
         Gdx.input.setInputProcessor(levelPage.getStage()); // Set the input processor back to the main stage if needed
         showSettings = false; // Ensure showSettings is false when overlay is closed
+    showSave=false;
     }
 
     public boolean isActive() {
