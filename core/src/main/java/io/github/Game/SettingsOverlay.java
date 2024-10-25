@@ -1,8 +1,5 @@
 package io.github.Game;
 
-
-
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,14 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-import io.github.some_example_name.LevelPage;
-import io.github.some_example_name.LevelPage;
-
 import java.util.ArrayList;
 
 
 public class SettingsOverlay extends ScreenAdapter {
-    private Game game;
     private SpriteBatch batch;
     private Stage Setting_stage;
     private ImageButton closeButton;
@@ -31,18 +24,12 @@ public class SettingsOverlay extends ScreenAdapter {
     private Texture settings_background;
     private ImageButton MuteButton;
 
-    private Boolean ShowLoadGame = false;
-
-    private ImageButton LoadLevel1_button;
-    private ImageButton LoadLevel2_button;
-
+int first_time=0;
+//    private Slider volumeSlider;
 
     float SCREEN_WIDTH = Gdx.graphics.getWidth();
     float SCREEN_HEIGHT = Gdx.graphics.getHeight();
 
-//    public SettingsOverlay(Game game) {
-//        this.game = game;
-//    }
 
 
     private ArrayList<Drawable> level_button_texture(String up_texture, String down_texture ) {
@@ -75,14 +62,13 @@ public class SettingsOverlay extends ScreenAdapter {
         button.setPosition(SCREEN_WIDTH*pos_X - button.getWidth()*0.5f, SCREEN_HEIGHT*pos_Y);
 
         button.setHeight(button_height); button.setWidth(button_width);
-//        Setting_stage.addActor(button);
+        Setting_stage.addActor(button);
         return button;
     }
 
 
 
-    public SettingsOverlay(Game game) {
-        this.game = game;
+    public SettingsOverlay() {
 
         batch = new SpriteBatch();
         settings_background = new Texture(Gdx.files.internal("menu_settings.png"));
@@ -113,6 +99,8 @@ public class SettingsOverlay extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("close button clicked");
+//               TutorialGame.setScreen(new TutorialGame(TutorialGame));
+//                Setting_stage.clear(); // Clear the settings overlay when close is clicked
                 closeOverlay();
 
             }
@@ -127,20 +115,13 @@ public class SettingsOverlay extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("CLICKED LOAD GAME BUTTON");
-                ShowLoadGame = true;
-                if(ShowLoadGame){
-                    LoadGameButton.remove();
-                    MuteButton.remove();
-                    Setting_stage.addActor(LoadLevel1_button);
-                    Setting_stage.addActor(LoadLevel2_button);
-                }
+//               TutorialGame.setScreen(new TutorialGame(TutorialGame));
+//                Setting_stage.clear(); // Clear the settings overlay when close is clicked
+
             }
         });
 
         Setting_stage.addActor(LoadGameButton);
-
-
-
 
         // MUTE BUTTON
         MuteButton = ImageButton_create("Mute.png", "Mute.png", 400,150, 0.5f,0.2f);
@@ -156,35 +137,6 @@ public class SettingsOverlay extends ScreenAdapter {
         });
 
         Setting_stage.addActor(MuteButton);
-
-
-
-
-        // LOAD LEVEL 1 BUTTON
-        LoadLevel1_button = ImageButton_create("Load_Game.png", "Load_Game.png", 400,150, 0.5f,0.5f);
-
-        LoadLevel1_button.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                System.out.println("CLICKED Load level 1 BUTTON");
-                game.setScreen( new LevelPage(game));
-//               TutorialGame.setScreen(new TutorialGame(TutorialGame));
-//                Setting_stage.clear(); // Clear the settings overlay when close is clicked
-            }
-        });
-
-        // LOAD LEVEL 2 BUTTON
-        LoadLevel2_button = ImageButton_create("Load_Game.png", "Load_Game.png", 400,150, 0.5f,0.5f);
-
-        LoadLevel2_button.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                System.out.println("CLICKED Load level 2 BUTTON");
-                game.setScreen( new LevelPage(game));
-//               TutorialGame.setScreen(new TutorialGame(TutorialGame));
-//                Setting_stage.clear(); // Clear the settings overlay when close is clicked
-            }
-        });
 
 
 
@@ -215,8 +167,6 @@ public class SettingsOverlay extends ScreenAdapter {
         closeButton.setPosition(Gdx.graphics.getWidth() * 0.65f - closeButton.getWidth()*0.5f, Gdx.graphics.getHeight() *0.8f - closeButton.getHeight() *0.5f);
         LoadGameButton.setPosition(Gdx.graphics.getWidth() * 0.51f - LoadGameButton.getWidth()*0.5f, Gdx.graphics.getHeight() *0.6f - closeButton.getHeight() *0.5f);
         MuteButton.setPosition(Gdx.graphics.getWidth() * 0.51f - MuteButton.getWidth()*0.5f, Gdx.graphics.getHeight() *0.4f - closeButton.getHeight() *0.5f);
-        LoadLevel1_button.setPosition(Gdx.graphics.getWidth() * 0.51f - LoadLevel1_button.getWidth()*0.5f, Gdx.graphics.getHeight() *0.6f - LoadLevel1_button.getHeight() *0.5f);
-        LoadLevel2_button.setPosition(Gdx.graphics.getWidth() * 0.51f - LoadLevel2_button.getWidth()*0.5f, Gdx.graphics.getHeight() *0.4f - LoadLevel2_button.getHeight() *0.5f);
 
 //        System.out.printf("close button position: %f, %f\n"  ,Gdx.graphics.getWidth() * 0.3f - closeButton.getWidth()*0.5f , Gdx.graphics.getHeight() *0.6f - closeButton.getHeight() *0.5f);
     }
