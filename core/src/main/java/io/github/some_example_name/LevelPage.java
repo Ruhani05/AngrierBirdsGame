@@ -39,13 +39,13 @@ public class LevelPage extends ScreenAdapter {
     }
     @Override
     public void show() {
-        stage = new Stage(new FitViewport(800, 600));
-        overlayPause = new OverlayPause(this);
+        stage = new Stage(new FitViewport(1600, 900));
+        overlayPause = new OverlayPause(this, game);
 
         // Background
          backgroundTexture = new Texture("background.png");
         Image backgroundImage = new Image(backgroundTexture);
-        backgroundImage.setSize(800, 600);  // Set full-screen size
+        backgroundImage.setSize(1600, 900);  // Set full-screen size
         stage.addActor(backgroundImage);
 
         // Level Setup
@@ -84,7 +84,7 @@ public class LevelPage extends ScreenAdapter {
 
         });
 //        stage.addActor(settingsButton);
-        overlayPause = new OverlayPause(this);
+        overlayPause = new OverlayPause(this, game);
     }
     private ArrayList<Drawable> buttonTextures(String upTexture, String downTexture) {
         Texture buttonUpTexture = new Texture(Gdx.files.internal(upTexture));
@@ -168,6 +168,7 @@ public class LevelPage extends ScreenAdapter {
     }
     @Override
     public void resize(int width, int height) {
+
         stage.getViewport().update(width, height, true);
     }
 

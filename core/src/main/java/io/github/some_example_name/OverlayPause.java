@@ -1,5 +1,6 @@
 package io.github.some_example_name;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Texture;
@@ -16,6 +17,7 @@ import io.github.Game.SettingsOverlay;
 import java.util.ArrayList;
 
 public class OverlayPause extends ScreenAdapter {
+    private Game game;
     private SpriteBatch batch;
     private OverlaySaveGame overlaySaveGame;
     private Stage pauseStage;
@@ -65,7 +67,7 @@ public class OverlayPause extends ScreenAdapter {
         return button;
     }
 
-    public OverlayPause(LevelPage levelPage) {
+    public OverlayPause(LevelPage levelPage, Game game) {
         this.levelPage = levelPage;
         batch = new SpriteBatch();
         pauseBackground = new Texture(Gdx.files.internal("menu_settings.png"));
@@ -143,7 +145,7 @@ public class OverlayPause extends ScreenAdapter {
         pauseStage.addActor(restartButton);
         //pauseStage.addActor(settingsButton);
         pauseStage.addActor(exitButton);
-        settingsOverlay = new SettingsOverlay();
+        settingsOverlay = new SettingsOverlay(game);
         overlaySaveGame = new OverlaySaveGame();
 
     }

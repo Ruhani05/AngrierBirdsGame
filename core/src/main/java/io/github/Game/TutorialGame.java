@@ -129,7 +129,8 @@ public class TutorialGame extends ScreenAdapter {//pages directed (load game,
         button_lvl2.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new TutorialGame(game));
+//                game.setScreen(new TutorialGame(game));
+                game.setScreen( new LevelPage(game));
             }
         });
 
@@ -154,7 +155,8 @@ public class TutorialGame extends ScreenAdapter {//pages directed (load game,
         button_lvl3.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new TutorialGame(game));
+//                game.setScreen(new TutorialGame(game));
+                game.setScreen( new LevelPage(game));
             }
         });
 
@@ -191,7 +193,7 @@ public class TutorialGame extends ScreenAdapter {//pages directed (load game,
 
         });
 //        stage.addActor(settingsButton);
-        settingsOverlay = new SettingsOverlay();
+        settingsOverlay = new SettingsOverlay(game);
 
 
 
