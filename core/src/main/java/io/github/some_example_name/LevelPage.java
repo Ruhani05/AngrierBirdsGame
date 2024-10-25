@@ -39,13 +39,13 @@ public class LevelPage extends ScreenAdapter {
     }
     @Override
     public void show() {
-        stage = new Stage(new FitViewport(800, 600));
-        overlayPause = new OverlayPause(this);
+        stage = new Stage(new FitViewport(1600, 900));
+        overlayPause = new OverlayPause(this, game);
 
         // Background
-         backgroundTexture = new Texture("background.png");
+        backgroundTexture = new Texture("background.png");
         Image backgroundImage = new Image(backgroundTexture);
-        backgroundImage.setSize(800, 600);  // Set full-screen size
+        backgroundImage.setSize(1600, 900);  // Set full-screen size
         stage.addActor(backgroundImage);
 
         // Level Setup
@@ -61,7 +61,7 @@ public class LevelPage extends ScreenAdapter {
         // Load Pause Button Texture
         pauseTexture = new Texture("pause.png");
         ImageButton pauseButton = ImageButton_create("pause.png","pause.png",200,200, 740, 550);
-       pauseButton.setPosition(740, 550); // Position at top-right corner
+        pauseButton.setPosition(740, 550); // Position at top-right corner
 
         // Add Button to Stage
         //stage.addActor(pauseButton);
@@ -84,7 +84,7 @@ public class LevelPage extends ScreenAdapter {
 
         });
 //        stage.addActor(settingsButton);
-        overlayPause = new OverlayPause(this);
+        overlayPause = new OverlayPause(this, game);
     }
     private ArrayList<Drawable> buttonTextures(String upTexture, String downTexture) {
         Texture buttonUpTexture = new Texture(Gdx.files.internal(upTexture));
@@ -130,29 +130,29 @@ public class LevelPage extends ScreenAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //if (game instanceof MyGame) {
-            SpriteBatch batch = ((MyGame) game).getBatch();
-            batch.begin();
-            batch.draw(backgroundTexture, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-            batch.end();
+        SpriteBatch batch = ((MyGame) game).getBatch();
+        batch.begin();
+        batch.draw(backgroundTexture, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        batch.end();
 
 
-            Gdx.input.setInputProcessor(stage);     // Revert to main stage input
+        Gdx.input.setInputProcessor(stage);     // Revert to main stage input
+        stage.act(delta);
+        stage.draw();
+
+        if (!showPause) {
+            // If settings are not shown, set input to main stage and draw it
+            Gdx.input.setInputProcessor(stage);
             stage.act(delta);
             stage.draw();
+        }
 
-            if (!showPause) {
-                // If settings are not shown, set input to main stage and draw it
-                Gdx.input.setInputProcessor(stage);
-                stage.act(delta);
-                stage.draw();
-            }
-
-            // If settings are shown, set input to the settingsOverlay stage and render it
-            if (showPause && overlayPause.isActive() ) {
-                //settingsOverlay.first_time=1;
-                Gdx.input.setInputProcessor(overlayPause.getStage());
-                overlayPause.render(delta);
-            }
+        // If settings are shown, set input to the settingsOverlay stage and render it
+        if (showPause && overlayPause.isActive() ) {
+            //settingsOverlay.first_time=1;
+            Gdx.input.setInputProcessor(overlayPause.getStage());
+            overlayPause.render(delta);
+        }
 
 
 //            if (showSettings && settingsOverlay.isActive()) {
@@ -168,6 +168,7 @@ public class LevelPage extends ScreenAdapter {
     }
     @Override
     public void resize(int width, int height) {
+
         stage.getViewport().update(width, height, true);
     }
 

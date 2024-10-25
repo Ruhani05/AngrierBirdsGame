@@ -86,7 +86,7 @@ public class OverlaySaveGame extends ScreenAdapter {
     public void render(float delta) {
         if (isActive) {
             batch.begin();
-            batch.draw(saveGameBackground, SCREEN_WIDTH / 2 - saveGameBackground.getWidth() / 2, SCREEN_HEIGHT / 2 - saveGameBackground.getHeight() / 2);
+            batch.draw(saveGameBackground, SCREEN_WIDTH / 2 - saveGameBackground.getWidth() / 2, SCREEN_HEIGHT / 2 - saveGameBackground.getHeight() / 2,500,600);
             batch.end();
 
             saveGameStage.act(delta);
