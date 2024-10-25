@@ -60,7 +60,7 @@ public class OverlayPause extends ScreenAdapter {
         buttonStyle.down = buttonDrawables.get(1);
 
         button = new ImageButton(buttonStyle);
-        button.setPosition(SCREEN_WIDTH * posX - button.getWidth() * 0.5f, SCREEN_HEIGHT * posY);
+        button.setPosition(SCREEN_WIDTH * posX - button.getWidth() * 0.5f, SCREEN_HEIGHT * posY-button.getHeight()*0.5f);
         button.setHeight(buttonHeight);
         button.setWidth(buttonWidth);
         pauseStage.addActor(button);

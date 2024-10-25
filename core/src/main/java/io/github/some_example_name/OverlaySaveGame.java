@@ -58,7 +58,7 @@ public class OverlaySaveGame extends ScreenAdapter {
 
     public OverlaySaveGame() {
         batch = new SpriteBatch();
-        saveGameBackground = new Texture(Gdx.files.internal("level_page_bg.png"));//save_game_background.png
+        saveGameBackground = new Texture(Gdx.files.internal("menu_settings2.png"));//save_game_background.png
         saveGameStage = new Stage(new ScreenViewport());
 
         // Create Close Button
@@ -86,7 +86,7 @@ public class OverlaySaveGame extends ScreenAdapter {
     public void render(float delta) {
         if (isActive) {
             batch.begin();
-            batch.draw(saveGameBackground, SCREEN_WIDTH / 2 - saveGameBackground.getWidth() / 2, SCREEN_HEIGHT / 2 - saveGameBackground.getHeight() / 2,500,600);
+            batch.draw(saveGameBackground, SCREEN_WIDTH / 2 - saveGameBackground.getWidth() / 2, SCREEN_HEIGHT / 2 - saveGameBackground.getHeight() / 2-40,500,600);
             batch.end();
 
             saveGameStage.act(delta);

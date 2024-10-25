@@ -72,7 +72,7 @@ public class SettingsOverlay extends ScreenAdapter {
 
         button = new ImageButton(button_style);
 //        button.setPosition(SCREEN_WIDTH*0.5f - button.getWidth()*0.5f, SCREEN_HEIGHT*0.1f);
-        button.setPosition(SCREEN_WIDTH*pos_X - button.getWidth()*0.5f, SCREEN_HEIGHT*pos_Y);
+        button.setPosition(SCREEN_WIDTH*pos_X-button.getWidth()*0.5f , SCREEN_HEIGHT*pos_Y-button.getHeight()*0.5f);
 
         button.setHeight(button_height); button.setWidth(button_width);
 //        Setting_stage.addActor(button);
@@ -106,7 +106,7 @@ public class SettingsOverlay extends ScreenAdapter {
 //        Drawable closeDrawable = new TextureRegionDrawable(closeTexture);
 //        closeButton = new ImageButton(closeDrawable);
 
-        closeButton = ImageButton_create("close_button.png", "close_button_down.png", 100,100, 0.5f,0.5f);
+        closeButton = ImageButton_create("close_button.png", "close_button_down.png", 100,100, 0.65f,0.8f);
 
         System.out.println("close button created");
         closeButton.addListener(new ClickListener() {
@@ -121,7 +121,7 @@ public class SettingsOverlay extends ScreenAdapter {
         Setting_stage.addActor(closeButton);
 
         // LOAD GAME BUTTON
-        LoadGameButton = ImageButton_create("Load_Game.png", "Load_Game.png", 400,150, 0.5f,0.6f);
+        LoadGameButton = ImageButton_create("Load_Game.png", "Load_Game.png", 400,150, 0.51f,0.6f);
 
         LoadGameButton.addListener(new ClickListener() {
             @Override
@@ -143,7 +143,8 @@ public class SettingsOverlay extends ScreenAdapter {
 
 
         // MUTE BUTTON
-        MuteButton = ImageButton_create("Mute.png", "Mute.png", 400,150, 0.5f,0.2f);
+        MuteButton = ImageButton_create("Mute.png", "Mute.png", 400,150, 0.51f,0.4f);
+
 
         MuteButton.addListener(new ClickListener() {
             @Override
@@ -161,7 +162,7 @@ public class SettingsOverlay extends ScreenAdapter {
 
 
         // LOAD LEVEL 1 BUTTON
-        LoadLevel1_button = ImageButton_create("Load_Game1.png", "Load_Game1.png", 400,150, 0.5f,0.5f);
+        LoadLevel1_button = ImageButton_create("Load_Game1.png", "Load_Game1.png", 400,150, 0.51f,0.6f);
 
         LoadLevel1_button.addListener(new ClickListener() {
             @Override
@@ -174,7 +175,7 @@ public class SettingsOverlay extends ScreenAdapter {
         });
 
         // LOAD LEVEL 2 BUTTON
-        LoadLevel2_button = ImageButton_create("Load_Game2.png", "Load_Game2.png", 400,150, 0.5f,0.5f);
+        LoadLevel2_button = ImageButton_create("Load_Game2.png", "Load_Game2.png", 400,150, 0.51f,0.4f);
 
         LoadLevel2_button.addListener(new ClickListener() {
             @Override
@@ -202,7 +203,7 @@ public class SettingsOverlay extends ScreenAdapter {
     public void render(float delta) {
         if(isActive ) {
             batch.begin();
-            batch.draw(settings_background, SCREEN_WIDTH/2 - settings_background.getWidth()/2, SCREEN_HEIGHT/2 - settings_background.getHeight()/2 - 40, 500, 600);
+            batch.draw(settings_background, SCREEN_WIDTH/2 - settings_background.getWidth()/2, SCREEN_HEIGHT/2 - settings_background.getHeight()/2 -40, 500, 600);
             batch.end();
             Setting_stage.act(delta);
             Setting_stage.draw();
@@ -213,8 +214,8 @@ public class SettingsOverlay extends ScreenAdapter {
     public void resize(int width, int height) {
         Setting_stage.getViewport().update(width, height, true);
         closeButton.setPosition(Gdx.graphics.getWidth() * 0.65f - closeButton.getWidth()*0.5f, Gdx.graphics.getHeight() *0.8f - closeButton.getHeight() *0.5f);
-        LoadGameButton.setPosition(Gdx.graphics.getWidth() * 0.51f - LoadGameButton.getWidth()*0.5f, Gdx.graphics.getHeight() *0.6f - closeButton.getHeight() *0.5f);
-        MuteButton.setPosition(Gdx.graphics.getWidth() * 0.51f - MuteButton.getWidth()*0.5f, Gdx.graphics.getHeight() *0.4f - closeButton.getHeight() *0.5f);
+        LoadGameButton.setPosition(Gdx.graphics.getWidth() * 0.51f - LoadGameButton.getWidth()*0.5f, Gdx.graphics.getHeight() *0.6f - LoadGameButton.getHeight() *0.5f);
+        MuteButton.setPosition(Gdx.graphics.getWidth() * 0.51f - MuteButton.getWidth()*0.5f, Gdx.graphics.getHeight() *0.4f - MuteButton.getHeight() *0.5f);
         LoadLevel1_button.setPosition(Gdx.graphics.getWidth() * 0.51f - LoadLevel1_button.getWidth()*0.5f, Gdx.graphics.getHeight() *0.6f - LoadLevel1_button.getHeight() *0.5f);
         LoadLevel2_button.setPosition(Gdx.graphics.getWidth() * 0.51f - LoadLevel2_button.getWidth()*0.5f, Gdx.graphics.getHeight() *0.4f - LoadLevel2_button.getHeight() *0.5f);
 
@@ -223,7 +224,8 @@ public class SettingsOverlay extends ScreenAdapter {
 
     public void dispose() {
         Setting_stage.dispose();
-
+        //batch.dispose();
+        //settings_background.dispose();
     }
 
     public Stage getStage() {

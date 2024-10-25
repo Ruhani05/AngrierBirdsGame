@@ -60,7 +60,7 @@ public class LevelPage extends ScreenAdapter {
 
         // Load Pause Button Texture
         pauseTexture = new Texture("pause.png");
-        ImageButton pauseButton = ImageButton_create("pause.png","pause.png",200,200, 740, 550);
+        ImageButton pauseButton = ImageButton_create("pause.png","pause_down.png",200,200, 740, 550);
         pauseButton.setPosition(740, 550); // Position at top-right corner
 
         // Add Button to Stage
