@@ -62,7 +62,7 @@ public class OverlaySaveGame extends ScreenAdapter {
         saveGameStage = new Stage(new ScreenViewport());
 
         // Create Close Button
-        closeButton = createImageButton("close_button.png", "close_button_down.png", 100, 100, 0.5f, 0.2f);
+        closeButton = createImageButton("close_button.png", "close_button_down.png", 100, 100, 0.51f, 0.2f);
         closeButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -72,7 +72,7 @@ public class OverlaySaveGame extends ScreenAdapter {
         saveGameStage.addActor(closeButton);
 
         // Create Confirm Save Button
-        confirmSaveButton = createImageButton("Load_Game.png", "Load_Game.png", 300, 100, 0.5f, 0.5f);//"confirm_save.png"
+        confirmSaveButton = createImageButton("confirm_save.png", "confirm_save.png", 400, 100, 0.51f, 0.5f);//"confirm_save.png"
         confirmSaveButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

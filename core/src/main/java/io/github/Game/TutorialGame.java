@@ -67,7 +67,6 @@ public class TutorialGame extends ScreenAdapter {//pages directed (load game,
         button_style.down = button_drawable.get(1);
 
         button = new ImageButton(button_style);
-//        button.setPosition(SCREEN_WIDTH*0.5f - button.getWidth()*0.5f, SCREEN_HEIGHT*0.1f);
         button.setPosition(SCREEN_WIDTH*pos_X - button.getWidth()*0.5f, SCREEN_HEIGHT*pos_Y);
 
         button.setHeight(button_height); button.setWidth(button_width);
