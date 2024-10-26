@@ -70,11 +70,11 @@ public class OverlayPause extends ScreenAdapter {
     public OverlayPause(LevelPage levelPage, Game game) {
         this.levelPage = levelPage;
         batch = new SpriteBatch();
-        pauseBackground = new Texture(Gdx.files.internal("menu_settings.png"));
+        pauseBackground = new Texture(Gdx.files.internal("Pause_bg.png"));
         pauseStage = new Stage(new ScreenViewport());
 
         // Create buttons
-        resumeButton = createImageButton("pause.png", "pause.png", 200, 100, 0.5f, 0.6f);
+        resumeButton = createImageButton("mute.png", "mute.png", 400, 105, 0.5f, 0.75f);
         resumeButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -82,7 +82,7 @@ public class OverlayPause extends ScreenAdapter {
             }
         });
 
-        saveButton = createImageButton("mute.png", "mute.png", 200, 100, 0.5f, 0.5f);
+        saveButton = createImageButton("mute.png", "mute.png", 400, 105, 0.5f, 0.65f);
         saveButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -97,7 +97,7 @@ public class OverlayPause extends ScreenAdapter {
             }
         });
 
-        restartButton = createImageButton("pause.png", "pause.png", 200, 100, 0.5f, 0.4f);
+        restartButton = createImageButton("mute.png", "mute.png", 400, 105, 0.5f, 0.55f);
         restartButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -107,7 +107,7 @@ public class OverlayPause extends ScreenAdapter {
             }
         });
 
-        settingsButton = createImageButton("settings_button.png", "settings_button.png", 200, 100, 0.5f, 0.3f);
+        settingsButton = createImageButton("settings_button.png", "settings_button.png", 100, 100, 0.5f, 0.25f);
         //settingsButton.setPosition(0.5f, 0.3f);
         settingsButton.addListener(new ClickListener() {
             @Override
@@ -130,7 +130,7 @@ public class OverlayPause extends ScreenAdapter {
             }
         });
 
-        exitButton = createImageButton("close_button.png", "close_button_down.png", 200, 100, 0.5f, 0.2f);
+        exitButton = createImageButton("mute.png", "mute.png", 400, 105, 0.5f, 0.45f);
         exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -152,7 +152,7 @@ public class OverlayPause extends ScreenAdapter {
     public void render(float delta) {
         if (isActive) {
             batch.begin();
-            batch.draw(pauseBackground, SCREEN_WIDTH / 2 - pauseBackground.getWidth() / 2, SCREEN_HEIGHT / 2 - pauseBackground.getHeight() / 2);
+            batch.draw(pauseBackground, SCREEN_WIDTH / 2 - pauseBackground.getWidth() / 2, SCREEN_HEIGHT / 2 - pauseBackground.getHeight() / 2-40,500,600);
             batch.end();
 
             pauseStage.act(delta);
