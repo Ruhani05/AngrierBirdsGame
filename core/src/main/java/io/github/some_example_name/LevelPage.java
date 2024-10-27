@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import io.github.Game.MyGame;
 import io.github.Game.SettingsOverlay;
 import io.github.Game.TutorialGame;
@@ -39,18 +40,22 @@ public class LevelPage extends ScreenAdapter {
     }
     @Override
     public void show() {
-        stage = new Stage(new FitViewport(1600, 900));
+        //stage = new Stage(new FitViewport(1600, 900));
+        backgroundTexture = new Texture("background.png");
+
+        stage=new Stage(new ScreenViewport());
         overlayPause = new OverlayPause(this, game);
 
         // Background
-        backgroundTexture = new Texture("background.png");
-        Image backgroundImage = new Image(backgroundTexture);
-        backgroundImage.setSize(1600, 900);  // Set full-screen size
-        stage.addActor(backgroundImage);
+        // Set Input Processor
+        Gdx.input.setInputProcessor(stage);
+//        Image backgroundImage = new Image(backgroundTexture);
+//        backgroundImage.setSize(1600, 900);  // Set full-screen size
+        //stage.addActor(backgroundImage);
 
         // Level Setup
         Ground ground = new Ground("grd.PNG", 800, 20);
-        Catapult catapult = new Catapult("catapault.png", 220, 125, 100, 100);
+        Catapult catapult = new Catapult("catapault.png", 0.2f, 125, 100, 100);
         level1 = new Level1(ground, catapult);
 
         // Add level elements to the stage
@@ -60,14 +65,22 @@ public class LevelPage extends ScreenAdapter {
 
         // Load Pause Button Texture
         pauseTexture = new Texture("pause.png");
-        ImageButton pauseButton = ImageButton_create("pause.png","pause_down.png",200,200, 740, 550);
-        pauseButton.setPosition(740, 550); // Position at top-right corner
+        ImageButton pauseButton = ImageButton_create("pause.png","pause_down.png",200,200, 800, 400);
+        pauseButton.setPosition(800, 400); // Position at top-right corner
 
         // Add Button to Stage
         //stage.addActor(pauseButton);
+        // Add Win Button
+        ImageButton winButton = ImageButton_create("confirm_save.png", "confirm_save.png", 60, 60, 700, 400);
+        //stage.addActor(winButton);
+        winButton.setPosition(700,400);
 
-        // Set Input Processor
-        Gdx.input.setInputProcessor(stage);
+        // Add Lose Button
+        ImageButton loseButton = ImageButton_create("confirm_save.png", "confirm_save.png", 60, 60, 900, 400);
+        //stage.addActor(loseButton);
+        loseButton.setPosition(600,400);
+
+
         pauseButton.addListener(new ClickListener()
         {
             @Override
@@ -82,6 +95,21 @@ public class LevelPage extends ScreenAdapter {
                 System.out.println("returned from PAUSE" );
             }
 
+        });
+        // Win Button Listener
+        winButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new WinScreen(game));
+            }
+        });
+
+        // Lose Button Listener
+        loseButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new LoseScreen(game));
+            }
         });
 //        stage.addActor(settingsButton);
         overlayPause = new OverlayPause(this, game);
@@ -112,7 +140,7 @@ public class LevelPage extends ScreenAdapter {
 
         button = new ImageButton(button_style);
 //        button.setPosition(SCREEN_WIDTH*0.5f - button.getWidth()*0.5f, SCREEN_HEIGHT*0.1f);
-        button.setPosition(SCREEN_WIDTH*pos_X - button.getWidth()*0.5f, SCREEN_HEIGHT*pos_Y);
+        button.setPosition(SCREEN_WIDTH*pos_X - button.getWidth()*0.5f, SCREEN_HEIGHT*pos_Y-button.getHeight()*0.5f);
 
         button.setHeight(button_height); button.setWidth(button_width);
         stage.addActor(button);

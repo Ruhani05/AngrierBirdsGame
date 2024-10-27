@@ -49,7 +49,7 @@ public class OverlaySaveGame extends ScreenAdapter {
         buttonStyle.down = buttonDrawables.get(1);
 
         button = new ImageButton(buttonStyle);
-        button.setPosition(SCREEN_WIDTH * posX - button.getWidth() * 0.5f, SCREEN_HEIGHT * posY);
+        button.setPosition(SCREEN_WIDTH * posX - button.getWidth() * 0.5f, SCREEN_HEIGHT * posY-button.getHeight()*0.5f);
         button.setHeight(buttonHeight);
         button.setWidth(buttonWidth);
         saveGameStage.addActor(button);
@@ -62,7 +62,7 @@ public class OverlaySaveGame extends ScreenAdapter {
         saveGameStage = new Stage(new ScreenViewport());
 
         // Create Close Button
-        closeButton = createImageButton("close_button.png", "close_button_down.png", 100, 100, 0.51f, 0.2f);
+        closeButton = createImageButton("close_button.png", "close_button_down.png", 100, 100, 0.65f, 0.8f);
         closeButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -96,6 +96,9 @@ public class OverlaySaveGame extends ScreenAdapter {
 
     public void resize(int width, int height) {
         saveGameStage.getViewport().update(width, height, true);
+        confirmSaveButton.setPosition(SCREEN_WIDTH * 0.51f - confirmSaveButton.getWidth() * 0.5f, SCREEN_HEIGHT * 0.2f-confirmSaveButton.getHeight()*0.5f);
+        closeButton.setPosition(SCREEN_WIDTH * 0.65f - closeButton.getWidth() * 0.5f, SCREEN_HEIGHT * 0.8f-closeButton.getHeight()*0.5f);
+
     }
 
     public void dispose() {
