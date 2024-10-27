@@ -55,7 +55,7 @@ public class LevelPage extends ScreenAdapter {
 
         // Level Setup
         Ground ground = new Ground("grd.PNG", 800, 20);
-        Catapult catapult = new Catapult("catapault.png", 0.2f, 125, 100, 100);
+        Catapult catapult = new Catapult("catapault.png", 0.2f, 0.3f, 125, 150);
         level1 = new Level1(ground, catapult);
 
         // Add level elements to the stage
@@ -65,20 +65,20 @@ public class LevelPage extends ScreenAdapter {
 
         // Load Pause Button Texture
         pauseTexture = new Texture("pause.png");
-        ImageButton pauseButton = ImageButton_create("pause.png","pause_down.png",200,200, 800, 400);
-        pauseButton.setPosition(800, 400); // Position at top-right corner
+        ImageButton pauseButton = ImageButton_create("pause.png","pause_down.png",150,150, 1f, 1f);
+        //pauseButton.setPosition(800, 400); // Position at top-right corner
 
         // Add Button to Stage
         //stage.addActor(pauseButton);
         // Add Win Button
-        ImageButton winButton = ImageButton_create("confirm_save.png", "confirm_save.png", 60, 60, 700, 400);
+        ImageButton winButton = ImageButton_create("win.png", "win.png", 60, 60, 0.95f, 0.95f);
         //stage.addActor(winButton);
-        winButton.setPosition(700,400);
+        //winButton.setPosition(700,400);
 
         // Add Lose Button
-        ImageButton loseButton = ImageButton_create("confirm_save.png", "confirm_save.png", 60, 60, 900, 400);
+        ImageButton loseButton = ImageButton_create("lose.png", "lose.png", 60, 60, 0.9f, 0.95f);
         //stage.addActor(loseButton);
-        loseButton.setPosition(600,400);
+        //loseButton.setPosition(600,400);
 
 
         pauseButton.addListener(new ClickListener()
