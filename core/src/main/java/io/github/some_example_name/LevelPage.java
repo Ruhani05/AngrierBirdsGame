@@ -34,6 +34,7 @@ public class LevelPage extends ScreenAdapter {
     private boolean showPause = false;
     float SCREEN_WIDTH = Gdx.graphics.getWidth();
     float SCREEN_HEIGHT = Gdx.graphics.getHeight();
+    private ImageButton pauseButton;
 
     public LevelPage(Game game) { // Accept Game as a parameter
         this.game = game;
@@ -65,7 +66,7 @@ public class LevelPage extends ScreenAdapter {
 
         // Load Pause Button Texture
         pauseTexture = new Texture("pause.png");
-        ImageButton pauseButton = ImageButton_create("pause.png","pause_down.png",150,150, 1f, 1f);
+         pauseButton = ImageButton_create("pause.png","pause_down.png",150,150, 1f, 1f);
         //pauseButton.setPosition(800, 400); // Position at top-right corner
 
         // Add Button to Stage
@@ -198,6 +199,7 @@ public class LevelPage extends ScreenAdapter {
     public void resize(int width, int height) {
 
         stage.getViewport().update(width, height, true);
+        pauseButton.setPosition(Gdx.graphics.getWidth()-pauseButton.getWidth(),Gdx.graphics.getHeight()-pauseButton.getHeight());
     }
 
 

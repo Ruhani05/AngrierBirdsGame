@@ -25,14 +25,14 @@ public class Block {
     public Image getImage() {
         return image;
     }
-//    public void resize(float newWidth, float newHeight) {
-//        // Resize and reposition the block based on the new screen dimensions
-//        float newBlockWidth = newWidth * widthPercent;
-//        float newBlockHeight = newHeight * heightPercent;
-//        float newX = newWidth * xPercent - newBlockWidth * 0.5f;
-//        float newY = newHeight * yPercent - newBlockHeight * 0.5f;
-//
-//        this.image.setSize(newBlockWidth, newBlockHeight);
-//        this.image.setPosition(newX, newY);
-//    }
+    public void resize(float newWidth, float newHeight) {
+        // Resize and reposition the block based on the new screen dimensions
+        float newBlockWidth = newWidth * widthPercent;
+        float newBlockHeight = newHeight * heightPercent;
+        float newX = newWidth * xPercent - newBlockWidth * 0.5f;
+        float newY = newHeight * yPercent - newBlockHeight * 0.5f;
+
+        this.image.setSize(newBlockWidth, newBlockHeight);
+        this.image.setPosition(newX, newY);
+    }
 }
