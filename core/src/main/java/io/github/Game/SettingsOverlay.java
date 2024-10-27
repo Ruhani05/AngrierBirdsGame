@@ -20,7 +20,6 @@ import io.github.some_example_name.LevelPage;
 
 import java.util.ArrayList;
 
-
 public class SettingsOverlay extends ScreenAdapter {
     private Game game;
     private SpriteBatch batch;
@@ -112,8 +111,15 @@ public class SettingsOverlay extends ScreenAdapter {
         closeButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("close button clicked");
+                ShowLoadGame = false;
+                System.out.println("close button clicked - ShowLoadGame: "+ ShowLoadGame);
                 closeOverlay();
+                if(!ShowLoadGame){
+                    Setting_stage.addActor(LoadGameButton);
+                    Setting_stage.addActor(MuteButton);
+                    LoadLevel1_button.remove();
+                    LoadLevel2_button.remove();
+                }
 
             }
         });
@@ -126,7 +132,7 @@ public class SettingsOverlay extends ScreenAdapter {
         LoadGameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("CLICKED LOAD GAME BUTTON");
+                System.out.println("CLICKED LOAD GAME BUTTON - earlier ShowLoadGame: " + ShowLoadGame );
                 ShowLoadGame = true;
                 if(ShowLoadGame){
                     LoadGameButton.remove();
@@ -134,6 +140,7 @@ public class SettingsOverlay extends ScreenAdapter {
                     Setting_stage.addActor(LoadLevel1_button);
                     Setting_stage.addActor(LoadLevel2_button);
                 }
+
             }
         });
 
