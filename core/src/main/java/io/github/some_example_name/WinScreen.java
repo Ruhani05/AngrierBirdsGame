@@ -30,6 +30,7 @@ public class WinScreen extends ScreenAdapter {
     public WinScreen(Game game) {
         this.game = game;
     }
+
     private ArrayList<Drawable> level_button_texture(String up_texture, String down_texture ) {
         Texture buttonUpTexture = new Texture(Gdx.files.internal(up_texture));
         Texture buttonDownTexture = new Texture(Gdx.files.internal(down_texture));
