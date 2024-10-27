@@ -71,14 +71,14 @@ public class LevelPage extends ScreenAdapter {
         // Add Button to Stage
         //stage.addActor(pauseButton);
         // Add Win Button
-        ImageButton winButton = ImageButton_create("win.png", "win.png", 60, 60, 0.95f, 0.95f);
+        ImageButton winButton = ImageButton_create("win.png", "win.png", 60, 60, 0.95f, 1f);
         //stage.addActor(winButton);
-        //winButton.setPosition(700,400);
+        winButton.setPosition(SCREEN_WIDTH-200-60-65,SCREEN_HEIGHT-60);
 
         // Add Lose Button
-        ImageButton loseButton = ImageButton_create("lose.png", "lose.png", 60, 60, 0.9f, 0.95f);
+        ImageButton loseButton = ImageButton_create("lose.png", "lose.png", 60, 60, 0.9f, 1f);
         //stage.addActor(loseButton);
-        //loseButton.setPosition(600,400);
+        loseButton.setPosition(SCREEN_WIDTH-200-65,SCREEN_HEIGHT-60);
 
 
         pauseButton.addListener(new ClickListener()
