@@ -1,5 +1,5 @@
 # AngrierBirds
-
+Members- Harshit Dawra 2023237, Ruhani Bhatia 2023450
 A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
 
 This project was generated with a template including simple application launchers and an `ScreenAdapter` extension that draws a simple GUI on the screen.
