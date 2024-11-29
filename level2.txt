@@ -1,0 +1,12 @@
+Bird:bird3.PNG,300.6,237.01413,45.0,45.0,1,false
+Bird:bird1.PNG,207.73766,220.51988,45.0,45.0,2,false
+Bird:bird2.PNG,167.59459,175.51112,45.0,45.0,2,false
+Bird:bird4.PNG,115.0,119.01494,45.0,45.0,2,false
+Pig:pig1.png,999.0,119.612854,50.0,50.0,5,false
+Pig:pig2.png,871.0,119.612854,50.0,50.0,5,false
+Pig:pig3.png,871.0016,269.01953,50.0,50.0,4,false
+Pig:pig4.png,999.0001,269.0182,50.0,50.0,4,false
+Block:block3.png,802.0008,119.011,30.0,120.0,9,false
+Block:block3.png,1089.9998,119.01094,30.0,120.0,9,false
+Block:block3.png,946.00116,119.01013,30.0,120.0,9,false
+Block:block1.png,773.9993,239.01765,370.0,30.0,15,false
