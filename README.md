@@ -1,5 +1,7 @@
 # AngrierBirds
-Members- Harshit Dawra 2023237, Ruhani Bhatia 2023450
+Member - Ruhani Bhatia 2023450(only member for the 3rd deadline)
+
+Uptill second deadline(worked with 2023237, Harshit Dawara)
 A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
 
 This project was generated with a template including simple application launchers and an `ScreenAdapter` extension that draws a simple GUI on the screen.
@@ -25,24 +27,10 @@ Are present in the AngryBirds2027 Folder Itself as PDF files.
 
 ## General Instructions to Play the Game:
     On the Start Game Click on Play Button, or Exit Button, according to your own Choice.
-    After CLicking Start, you would be redirected to a level selection page.
 
-    On the Level Selection Page: 
-        For now all levels lead to a comman level.
-        You Can also go to settings from there which can load a game (again connected to the same level), or you can click Mute, which shows in the console that you have clicked it.
-        There is also a back Button.
+    After CLicking Start, you would be redirected to a level selection page. Selct level1 or level2 or level3. inside each level pause menu has options to resume,restart,exit,save,settings. settings can load game. Each level can has its own saved game, therefore we can store a game at any level and will be restored at that level.
+
     
-    On Level Page:
-        There would be renders of different assets seperately. and there would be a Pause page to provide Save Game Features.
-        Pause Menu also includes options to Quit/Resume Level, or open Settings.
-        Settings Include the same options as mentioned in the Level Selection PAge.
-
-    After Completing a Level, User Would be Taken to a Loss or Win Page. 
-        Where in Case of Win, User can click on Next, Quit Level.   
-        In case of Lose, User can click on retry, Quit.
-    
-    That Sums Up Our Game's GUI. 
-
 In the end Tree Looks Like this:
 
 
@@ -145,12 +133,18 @@ github
 │       TutorialGame.java
 │
 └───some_example_name
+                 ├───serializationPurposeMyGame
+                 │       BirdDTO.jav
+                 │       BlockDTO.java
+                 │       PigDTO.java
+                  ├───Mycontactlistner.java---Mycontactlistner.java
+        BirdDTO.jav
         Bird.java
         Block.java
         Catapult.java
         Ground.java
-        Level1.java
-        LevelPage.java
+        Level1.java Level2.java Level3.java Level_parent.java
+        LevelPage.java SavedLevelPage.java
         LoseScreen.java
         OverlayPause.java
         OverlaySaveGame.java

@@ -1,9 +1,10 @@
 package io.github.some_example_name;
 
-import com.badlogic.gdx.*;
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -12,76 +13,51 @@ import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import io.github.Game.MyGame;
-import io.github.Game.SettingsOverlay;
 import io.github.Game.TutorialGame;
-import io.github.some_example_name.PauseScreen;
+import io.github.some_example_name.serializationPurpose.BirdDTO;
+import io.github.some_example_name.serializationPurpose.BlockDTO;
+import io.github.some_example_name.serializationPurpose.PigDTO;
+import io.github.some_example_name.serializationPurpose.SerializableLevel;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
-public class LevelPage extends ScreenAdapter {
-     Texture dotTexture;
+public class SavedLevelPage extends LevelPage {
+    private ArrayList<Bird> birds;
+    private ArrayList<Pig> pigs;
+    private ArrayList<Block> blocks;
+    private World world;
 
-
-    ArrayList<Bird> birds;
-    ArrayList<Pig> pigs;
-    ArrayList<Block> blocks;
-     MouseJoint mouseJoint;
-     Body groundBody; // Define ground body for MouseJoint
-     Sprite groundSprite; // Declare the Sprite for the ground texture
-
-     World world;
-     Box2DDebugRenderer debugRenderer;
-     Stage stage;
-     Texture backgroundTexture;
-     Skin skin;
-     OverlayPause overlayPause;
-     Texture pauseTexture;
-     Level_parent level1;
-
-     Ground ground;
-     Catapult catapult;
-    public int level_numb;
-     Game game;
-     MyContactListener contactListener;
-     boolean showPause = false;
-    float SCREEN_WIDTH = Gdx.graphics.getWidth();
-    float SCREEN_HEIGHT = Gdx.graphics.getHeight();
-     ImageButton pauseButton;
-
-    public LevelPage(Game game, int numb) {
-        this.level_numb = numb;// Accept Game as a parameter
-        this.game = game;
-        world = new World(new Vector2(0, -9.8f), true); // Gravity vector
-        contactListener = new MyContactListener(); // Initialize the contact listener
-        world.setContactListener(contactListener); // Set it for the world
-
-//        this.blocks = new ArrayList<>();
-//        this.pigs = new ArrayList<>();
-//        this.birds = new ArrayList<>();
-        if (numb == 1) {
-            level1 = new Level1(ground, catapult, world);
-        } else if (numb == 2) {
-
-            level1 = new Level2(ground, catapult, world);
-
-        } else {
-            level1 = new Level3(ground, catapult, world);
-        }
+    SerializableLevel savedLevel;
+    public SavedLevelPage(Game game, SerializableLevel savedLevel) {
+        //this.world = new World(new Vector2(0, -9.8f), true); // Create a new World
+        super(game, savedLevel.levelNumber);
+        this.birds = new ArrayList<>();
+        this.pigs = new ArrayList<>();
+        this.blocks = new ArrayList<>();
+        this.savedLevel=savedLevel;
+//        world = new World(new Vector2(0, -9.8f), true); // Gravity vector
+//        contactListener = new MyContactListener(); // Initialize the contact listener
+//        world.setContactListener(contactListener); // Set it for the world
+//        // Deserialize birds
+//        for (BirdDTO dto : savedLevel.getBirdDTOs()) {
+//            birds.add(new Bird(dto, world));
+//        }
+//        for (PigDTO dto : savedLevel.getPigDTO()) {
+//            pigs.add(new Pig(dto, world));
+//        }
+//        for (BlockDTO dto : savedLevel.getBlockDTO()) {
+//            blocks.add(new Block(dto, world));
+//        }
+        // Deserialize pigs and blocks similarly
     }
-
     @Override
     public void show() {
         //stage = new Stage(new FitViewport(1600, 900));
@@ -89,7 +65,19 @@ public class LevelPage extends ScreenAdapter {
 //        world = new World(new Vector2(0, -9.8f), true); // Gravity vector
 //        contactListener = new MyContactListener(); // Initialize the contact listener
 //        world.setContactListener(contactListener); // Set it for the world
-
+        world = new World(new Vector2(0, -9.8f), true); // Gravity vector
+        contactListener = new MyContactListener(); // Initialize the contact listener
+        world.setContactListener(contactListener); // Set it for the world
+        // Deserialize birds
+        for (BirdDTO dto : savedLevel.getBirdDTOs()) {
+            birds.add(new Bird(dto, world));
+        }
+        for (PigDTO dto : savedLevel.getPigDTO()) {
+            pigs.add(new Pig(dto, world));
+        }
+        for (BlockDTO dto : savedLevel.getBlockDTO()) {
+            blocks.add(new Block(dto, world));
+        }
         debugRenderer = new Box2DDebugRenderer();
         stage = new Stage(new ScreenViewport());
         overlayPause = new OverlayPause(this, game);
@@ -107,30 +95,60 @@ public class LevelPage extends ScreenAdapter {
         ground = new Ground("grd.PNG", Gdx.graphics.getWidth(), 20, 0, SCREEN_HEIGHT * 0.2f);
         //ground.getImage().setPosition(0, SCREEN_HEIGHT * 0.2f ); // Position the ground
         stage.addActor(ground.getImage()); // Add ground to the stage
-if(level_numb==1) {
-    catapult = new Catapult("catapault.png", 0.2f, 0.3f, 125, 150, world);
-}
-else if(level_numb==2){
-    catapult = new Catapult("catapault.png", 0.2f, 0.23f, 125, 150, world);
+Ground step1,step2,step3;
+        if(level_numb==1) {
+            catapult = new Catapult("catapault.png", 0.2f, 0.3f, 125, 150, world);
+             step1=new Ground("step.png",45,45,0.125f,0.25f,world);        // width=45, height=45
+             step2=new Ground("step.png",45,45,0.15f,0.25f,world);
+             step3=new Ground("step.png",45,45,0.15f,0.3f,world);
+            stage.addActor(step1.getImage());
+            stage.addActor(step2.getImage());
+            stage.addActor(step3.getImage());
+        }
+        else if(level_numb==2){
+            catapult = new Catapult("catapault.png", 0.2f, 0.23f, 125, 150, world);
+             step1=new Ground("step.png",45,45,0.125f,0.17f,world);        // width=45, height=45
+             step2=new Ground("step.png",45,45,0.15f,0.17f,world);
+             step3=new Ground("step.png",45,45,0.15f,0.22f,world);
+            stage.addActor(step1.getImage());
+            stage.addActor(step2.getImage());
+            stage.addActor(step3.getImage());
+        }
+        else{
+            catapult = new Catapult("catapault.png", 0.2f, 0.23f, 125, 150, world);
+//            Ground grd= new Ground("step.png",640,45,0.65f,0.24f,world);
+//            stage.addActor(grd.getImage());
 
-}
-else{
-    catapult = new Catapult("catapault.png", 0.2f, 0.3f, 125, 150, world);
+//             step1=new Ground("step.png",45,45,0.125f,0.25f,world);        // width=45, height=45
+//             step2=new Ground("step.png",45,45,0.15f,0.25f,world);
+//             step3=new Ground("step.png",45,45,0.15f,0.3f,world);
 
-}
+        }
+
         //level1 = new Level1(ground, catapult,world);
         backgroundTexture = level1.bg();
         dotTexture = new Texture(Gdx.files.internal("dot.png"));
 
+
         // Add level elements to the stage
         stage.addActor(ground.getImage());
         stage.addActor(catapult.getImage());
-        level1.setupLevel(stage);
-        // Access birds
-        birds = level1.getBirds();
-        blocks = level1.getBlocks();
-        pigs = level1.getPigs();
+//        level1.setupLevel(stage);
+//        // Access birds
+//        birds = level1.getBirds();
+//        blocks = level1.getBlocks();
+//        pigs = level1.getPigs();
+        for (Bird bird : birds) {
+            stage.addActor(bird.getImage());
+        }
+        for (Pig pig : pigs) {
+            stage.addActor(pig.getImage());
+        }
 
+        // Render blocks
+        for (Block block : blocks) {
+            stage.addActor(block.getImage());
+        }
 //
         // Load Pause Button Texture
         pauseTexture = new Texture("pause.png");
@@ -242,7 +260,6 @@ else{
 //            }
 //        });
     }
-
     void createGroundBody() {
         BodyDef groundDef = new BodyDef();
         //groundDef.position.set(0, SCREEN_HEIGHT * 0.2f / Gdx.graphics.getPpcY());
@@ -303,35 +320,144 @@ else{
         stage.addActor(button);
         return button;
     }
-//    private void switchToPauseScreen() {
-//        // Switch to Pause Screen
-//        Gdx.app.log("Switch", "Switching to Pause Screen");
-//        // Assuming using `Game` class, replace with your actual Game object
-//        ((com.badlogic.gdx.Game) Gdx.app.getApplicationListener()).setScreen(new PauseScreen());
+//    public void render(float delta) {
+//        Gdx.gl.glClearColor(0, 0, 0, 1);
+//        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+//        //if (game instanceof MyGame) {
+//        Iterator<Block> iterator = blocks.iterator();
+//        while (iterator.hasNext()) {
+//            Block block = iterator.next();
+//            if (block.isDestroyed()) {
+//                block.getImage().setPosition(-1000, -1000);
+//
+//                iterator.remove(); // Remove block from the list
+//            }
+//        }
+//        Iterator<Pig> iterator1 = pigs.iterator();
+//        while (iterator1.hasNext()) {
+//            Pig pig = iterator1.next();
+//            if (pig.isDestroyed()) {
+//                pig.getImage().setPosition(-1000, -1000);
+//                iterator1.remove(); // Remove block from the list
+//            }
+//        }
+////        Iterator<Bird> iterator2 = birds.iterator();
+////        while (iterator2.hasNext()) {
+////            Bird pig = iterator2.next();
+////            if (pig.isDestroyed()) {
+////                pig.getImage().setPosition(-1000, -1000);
+////
+////                iterator2.remove(); // Remove block from the list
+////            }
+////        }
+//        Iterator<Bird> iterator2 = birds.iterator();
+//        Bird previousBird = null; // Track the last active bird
+//        while (iterator2.hasNext()) {
+//            Bird currentBird = iterator2.next();
+//
+//            // If the bird is destroyed, remove it and reposition the next bird (if exists)
+//            if (currentBird.isDestroyed()) {
+//                currentBird.getImage().setPosition(-1000, -1000); // Move destroyed bird off-screen
+//                currentBird.getBody().setTransform(-1000, -1000, 0); // Move physics body off-screen
+//                iterator2.remove(); // Remove bird from the list
+//
+//                // Check if there's a next bird to reposition
+//                if (iterator2.hasNext()) {
+//                    Bird nextBird = iterator2.next();
+//                    nextBird.getImage().setPosition(275.0f, 270.27588f);
+//                    nextBird.getBody().setTransform(275.0f, 270.27588f, 0); // Update Box2D body
+//                }
+//            } else {
+//                // Update the last active bird
+//                previousBird = currentBird;
+//            }
+//        }
+//        // Check for win/lose conditions
+//        if (pigs.isEmpty()) {
+//            game.setScreen(new WinScreen(game, level_numb)); // All pigs are destroyed, switch to WinScreen
+//        } else if (birds.isEmpty()) {
+//            game.setScreen(new LoseScreen(game, level_numb)); // All birds are destroyed, switch to LoseScreen
+//        }
+//
+//        SpriteBatch batch = ((MyGame) game).getBatch();
+//        batch.begin();
+//        batch.draw(backgroundTexture, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+//        batch.end();
+//        for (Bird bird : birds) {
+//            bird.render(batch); // Render the bird, calling its update method inside the render
+//        }
+//        for (Pig pig : pigs) {
+//            pig.render(batch);
+//        }
+//
+//        // Render blocks
+//        for (Block block : blocks) {
+//            block.render(batch);
+//        }
+//
+//        Gdx.input.setInputProcessor(stage);     // Revert to main stage input
+//        stage.act(delta);
+//        stage.draw();
+//        //world.step(1 / 60f, 6, 2); // Step simulation (time step, velocity iterations, position iterations)
+//        if (!showPause) {
+//            world.step(1 / 60f, 6, 2); // Step simulation
+//            // Additional updates (e.g., birds, pigs, blocks)
+//        }
+//
+//        // Process the destruction queue to safely remove bodies
+//        contactListener.processDestructionQueue(world);
+//
+//        // Optionally, render the debug visuals for Box2D
+//        debugRenderer.render(world, batch.getProjectionMatrix()); // Render the debug visuals
+//
+//
+//        if (!showPause) {
+//            // If settings are not shown, set input to main stage and draw it
+//            Gdx.input.setInputProcessor(stage);
+//            stage.act(delta);
+//            stage.draw();
+//        }
+//
+//        // If settings are shown, set input to the settingsOverlay stage and render it
+//        if (showPause && overlayPause.isActive()) {
+//            //settingsOverlay.first_time=1;
+//            Gdx.input.setInputProcessor(overlayPause.getStage());
+//            overlayPause.render(delta);
+//        }
+//
+//
+////            if (showSettings && settingsOverlay.isActive()) {
+////                settingsOverlay.render(delta);
+//////                Gdx.input.setInputProcessor(settingsOverlay.getStage());  // Set input for settings overlay
+////            }
+////            else {
+////                Gdx.input.setInputProcessor(stage);     // Revert to main stage input
+////                stage.act(delta);
+////                stage.draw();
+////            }
+//
 //    }
+public void render(float delta) {
+    Gdx.gl.glClearColor(0, 0, 0, 1);
+    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    //if (game instanceof MyGame) {
+    Iterator<Block> iterator = blocks.iterator();
+    while (iterator.hasNext()) {
+        Block block = iterator.next();
+        if (block.isDestroyed()) {
+            block.getImage().setPosition(-1000, -1000);
 
-    @Override
-    public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        //if (game instanceof MyGame) {
-        Iterator<Block> iterator = blocks.iterator();
-        while (iterator.hasNext()) {
-            Block block = iterator.next();
-            if (block.isDestroyed()) {
-                block.getImage().setPosition(-1000, -1000);
-
-                iterator.remove(); // Remove block from the list
-            }
+            iterator.remove(); // Remove block from the list
         }
-        Iterator<Pig> iterator1 = pigs.iterator();
-        while (iterator1.hasNext()) {
-            Pig pig = iterator1.next();
-            if (pig.isDestroyed()) {
-                pig.getImage().setPosition(-1000, -1000);
-                iterator1.remove(); // Remove block from the list
-            }
+    }
+    Iterator<Pig> iterator1 = pigs.iterator();
+    while (iterator1.hasNext()) {
+        Pig pig = iterator1.next();
+        if (pig.isDestroyed()) {
+            pig.getImage().setPosition(-1000, -1000);
+            iterator1.remove(); // Remove block from the list
         }
+    }
 //        Iterator<Bird> iterator2 = birds.iterator();
 //        while (iterator2.hasNext()) {
 //            Bird pig = iterator2.next();
@@ -341,105 +467,105 @@ else{
 //                iterator2.remove(); // Remove block from the list
 //            }
 //        }
-        Iterator<Bird> iterator2 = birds.iterator();
-        Bird previousBird = null; // Track the last active bird
-        while (iterator2.hasNext()) {
-            Bird currentBird = iterator2.next();
+    Iterator<Bird> iterator2 = birds.iterator();
+    Bird previousBird = null; // Track the last active bird
+    while (iterator2.hasNext()) {
+        Bird currentBird = iterator2.next();
 
-            // If the bird is destroyed, remove it and reposition the next bird (if exists)
-            if (currentBird.isDestroyed()) {
-                currentBird.getImage().setPosition(-1000, -1000); // Move destroyed bird off-screen
-                currentBird.getBody().setTransform(-1000, -1000, 0); // Move physics body off-screen
-                iterator2.remove(); // Remove bird from the list
+        // If the bird is destroyed, remove it and reposition the next bird (if exists)
+        if (currentBird.isDestroyed()) {
+            currentBird.getImage().setPosition(-1000, -1000); // Move destroyed bird off-screen
+            currentBird.getBody().setTransform(-1000, -1000, 0); // Move physics body off-screen
+            iterator2.remove(); // Remove bird from the list
 
-                // Check if there's a next bird to reposition
-                if (iterator2.hasNext()) {
-                    Bird nextBird = iterator2.next();
-                    nextBird.getImage().setPosition(catapult.getBody().getPosition().x, catapult.getBody().getPosition().y+catapult.getImage().getHeight()/2f-nextBird.getImage().getHeight()/2f);
-                    nextBird.getBody().setTransform(catapult.getBody().getPosition().x, catapult.getBody().getPosition().y+catapult.getImage().getHeight()/2f-nextBird.getImage().getHeight()/2f, 0); // Update Box2D body
-                }
-            } else {
-                // Update the last active bird
-                previousBird = currentBird;
+            // Check if there's a next bird to reposition
+            if (iterator2.hasNext()) {
+                Bird nextBird = iterator2.next();
+                nextBird.getImage().setPosition(catapult.getBody().getPosition().x, catapult.getBody().getPosition().y+catapult.getImage().getHeight()/2f-nextBird.getImage().getHeight()/2f);
+                nextBird.getBody().setTransform(catapult.getBody().getPosition().x, catapult.getBody().getPosition().y+catapult.getImage().getHeight()/2f-nextBird.getImage().getHeight()/2f, 0); // Update Box2D body
             }
+        } else {
+            // Update the last active bird
+            previousBird = currentBird;
         }
+    }
 
-        // Check for win/lose conditions
-        if (pigs.isEmpty()) {
-            game.setScreen(new WinScreen(game, level_numb)); // All pigs are destroyed, switch to WinScreen
-        } else if (birds.isEmpty()) {
-            game.setScreen(new LoseScreen(game, level_numb)); // All birds are destroyed, switch to LoseScreen
+    // Check for win/lose conditions
+    if (pigs.isEmpty()) {
+        game.setScreen(new WinScreen(game, level_numb)); // All pigs are destroyed, switch to WinScreen
+    } else if (birds.isEmpty()) {
+        game.setScreen(new LoseScreen(game, level_numb)); // All birds are destroyed, switch to LoseScreen
+    }
+
+    SpriteBatch batch = ((MyGame) game).getBatch();
+    batch.begin();
+    batch.draw(backgroundTexture, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    batch.end();
+    for (Bird bird : birds) {
+        bird.render(batch); // Render the bird, calling its update method inside the render
+    }
+    for (Pig pig : pigs) {
+        pig.render(batch);
+    }
+
+    // Render blocks
+    for (Block block : blocks) {
+        block.render(batch);
+    }
+    batch.begin();
+    if (mouseJoint != null) {
+        Vector2 birdPosition = mouseJoint.getBodyB().getPosition(); // Bird's position
+        Vector2 mousePosition = mouseJoint.getTarget(); // Target position (mouse)
+
+        float dotWidth = 10f;  // Desired width of the dot
+        float dotHeight = 10f; // Desired height of the dot
+
+        float distance = birdPosition.dst(mousePosition); // Total distance
+        float dotSpacing = 10f; // Space between dots
+        int numberOfDots = (int) (distance / dotSpacing); // Number of dots
+
+        for (int i = 0; i < numberOfDots; i++) {
+            float t = (float) i / (numberOfDots - 1); // Interpolation factor
+            //float t=(float)i;
+            float x = birdPosition.x + t * (mousePosition.x - birdPosition.x);
+            float y = birdPosition.y + +t * (mousePosition.y - birdPosition.y)-0.5f*9.8f*t*t;
+
+            // Draw the dot
+            // batch.draw(dotTexture, x - dotTexture.getWidth() / 2, y - dotTexture.getHeight() / 2);
+            batch.draw(dotTexture, x - dotWidth / 2, y - dotHeight / 2, dotWidth, dotHeight);
+
         }
+    }
+    batch.end();
+    Gdx.input.setInputProcessor(stage);     // Revert to main stage input
+    stage.act(delta);
+    stage.draw();
+    //world.step(1 / 60f, 6, 2); // Step simulation (time step, velocity iterations, position iterations)
+    if (!showPause) {
+        world.step(1 / 60f, 6, 2); // Step simulation
+        // Additional updates (e.g., birds, pigs, blocks)
+    }
 
-        SpriteBatch batch = ((MyGame) game).getBatch();
-        batch.begin();
-        batch.draw(backgroundTexture, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-        batch.end();
-        for (Bird bird : birds) {
-            bird.render(batch); // Render the bird, calling its update method inside the render
-        }
-        for (Pig pig : pigs) {
-            pig.render(batch);
-        }
+    // Process the destruction queue to safely remove bodies
+    contactListener.processDestructionQueue(world);
 
-        // Render blocks
-        for (Block block : blocks) {
-            block.render(batch);
-        }
-batch.begin();
-        if (mouseJoint != null) {
-            Vector2 birdPosition = mouseJoint.getBodyB().getPosition(); // Bird's position
-            Vector2 mousePosition = mouseJoint.getTarget(); // Target position (mouse)
+    // Optionally, render the debug visuals for Box2D
+    //debugRenderer.render(world, batch.getProjectionMatrix()); // Render the debug visuals
 
-            float dotWidth = 10f;  // Desired width of the dot
-            float dotHeight = 10f; // Desired height of the dot
 
-            float distance = birdPosition.dst(mousePosition); // Total distance
-            float dotSpacing = 10f; // Space between dots
-            int numberOfDots = (int) (distance / dotSpacing); // Number of dots
-
-            for (int i = 0; i < numberOfDots; i++) {
-                float t = (float) i / (numberOfDots - 1); // Interpolation factor
-                //float t=(float)i;
-                float x = birdPosition.x + t * (mousePosition.x - birdPosition.x);
-                float y = birdPosition.y + +t * (mousePosition.y - birdPosition.y)-0.5f*9.8f*t*t;
-
-                // Draw the dot
-               // batch.draw(dotTexture, x - dotTexture.getWidth() / 2, y - dotTexture.getHeight() / 2);
-                batch.draw(dotTexture, x - dotWidth / 2, y - dotHeight / 2, dotWidth, dotHeight);
-
-            }
-        }
-batch.end();
-        Gdx.input.setInputProcessor(stage);     // Revert to main stage input
+    if (!showPause) {
+        // If settings are not shown, set input to main stage and draw it
+        Gdx.input.setInputProcessor(stage);
         stage.act(delta);
         stage.draw();
-        //world.step(1 / 60f, 6, 2); // Step simulation (time step, velocity iterations, position iterations)
-        if (!showPause) {
-            world.step(1 / 60f, 6, 2); // Step simulation
-            // Additional updates (e.g., birds, pigs, blocks)
-        }
+    }
 
-        // Process the destruction queue to safely remove bodies
-        contactListener.processDestructionQueue(world);
-
-        // Optionally, render the debug visuals for Box2D
-        //debugRenderer.render(world, batch.getProjectionMatrix()); // Render the debug visuals
-
-
-        if (!showPause) {
-            // If settings are not shown, set input to main stage and draw it
-            Gdx.input.setInputProcessor(stage);
-            stage.act(delta);
-            stage.draw();
-        }
-
-        // If settings are shown, set input to the settingsOverlay stage and render it
-        if (showPause && overlayPause.isActive()) {
-            //settingsOverlay.first_time=1;
-            Gdx.input.setInputProcessor(overlayPause.getStage());
-            overlayPause.render(delta);
-        }
+    // If settings are shown, set input to the settingsOverlay stage and render it
+    if (showPause && overlayPause.isActive()) {
+        //settingsOverlay.first_time=1;
+        Gdx.input.setInputProcessor(overlayPause.getStage());
+        overlayPause.render(delta);
+    }
 
 
 //            if (showSettings && settingsOverlay.isActive()) {
@@ -452,7 +578,7 @@ batch.end();
 //                stage.draw();
 //            }
 
-    }
+}
 
     @Override
     public void resize(int width, int height) {
@@ -580,3 +706,33 @@ batch.end();
         return stage;
     }
 }
+
+//    public SavedLevelPage(Game game, SerializableLevel levelData) {
+//        super(game, levelData.levelNumber);
+
+//        // Recreate birds
+//        for (Bird bird : levelData.birds) {
+//            birds.add(new Bird(
+//                bird.texturePath, bird.x, bird.y, bird.width, bird.height,
+//                bird.initialHealth, bird.isDestroyed
+//            ));
+//        }
+//
+//        // Recreate pigs
+//        for (Pig pig : levelData.pigs) {
+//            pigs.add(new Pig(
+//                pig.texturePath, pig.x, pig.y, pig.width, pig.height,
+//                pig.initialHealth, pig.isDestroyed
+//            ));
+//        }
+//
+//        // Recreate blocks
+//        for (Block block : levelData.blocks) {
+//            blocks.add(new Block(
+//                block.texturePath, block.x, block.y, block.width, block.height,
+//                block.initialHealth, block.isDestroyed
+//            ));
+//        }
+    //}
+
+

@@ -23,13 +23,14 @@ public class LoseScreen extends ScreenAdapter {
     private Stage stage;
     private Game game;
     private Texture background_texture;
-
+int numb;
     private ImageButton retryButton;
     private ImageButton exitButton;
 
     float SCREEN_WIDTH = Gdx.graphics.getWidth();
     float SCREEN_HEIGHT = Gdx.graphics.getHeight();
-    public LoseScreen(Game game) {
+    public LoseScreen(Game game,int numb) {
+        this.numb=numb;
         this.game = game;
     }
     private ArrayList<Drawable> level_button_texture(String up_texture, String down_texture ) {
@@ -77,7 +78,7 @@ public class LoseScreen extends ScreenAdapter {
         retryButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new LevelPage(game)); // Retry the level
+                game.setScreen(new LevelPage(game,numb)); // Retry the level
             }
         });
         //stage.addActor(retryButton);

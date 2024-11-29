@@ -22,12 +22,14 @@ import java.util.ArrayList;
 public class WinScreen extends ScreenAdapter {
     private Stage stage;
     private Game game;
+    int numb;
     private Texture background_texture;
     private ImageButton exitButton;
     private ImageButton nextLevelButton;
     float SCREEN_WIDTH = Gdx.graphics.getWidth();
     float SCREEN_HEIGHT = Gdx.graphics.getHeight();
-    public WinScreen(Game game) {
+    public WinScreen(Game game, int numb) {
+        this.numb=numb;
         this.game = game;
     }
 
@@ -77,7 +79,7 @@ public class WinScreen extends ScreenAdapter {
         nextLevelButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new LevelPage(game)); // Proceed to the next level
+                game.setScreen(new LevelPage(game,(numb+1)%3)); // Proceed to the next level
             }
         });
         //stage.addActor(nextLevelButton);

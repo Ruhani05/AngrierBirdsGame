@@ -28,7 +28,7 @@ public class OverlayPause extends ScreenAdapter {
     private ImageButton settingsButton;
     private ImageButton exitButton;
     public Boolean isActive = false;
-    private LevelPage levelPage;
+     LevelPage levelPage;
     private SettingsOverlay settingsOverlay;
     private boolean showSettings = false;
     private boolean showSave = false;// Track whether settings overlay is shown
@@ -147,7 +147,7 @@ public class OverlayPause extends ScreenAdapter {
         //pauseStage.addActor(settingsButton);
         pauseStage.addActor(exitButton);
         settingsOverlay = new SettingsOverlay(game);
-        overlaySaveGame = new OverlaySaveGame();
+        overlaySaveGame = new OverlaySaveGame(levelPage);
 
     }
 
@@ -250,6 +250,7 @@ public class OverlayPause extends ScreenAdapter {
 
     private void closeOverlay() {
         setActive(false); // Mark overlay as inactive
+        levelPage.showPause=false;
         pauseStage.getRoot().setVisible(false); // Hide the stage without clearing it
         Gdx.input.setInputProcessor(levelPage.getStage()); // Set the input processor back to the main stage if needed
         showSettings = false; // Ensure showSettings is false when overlay is closed

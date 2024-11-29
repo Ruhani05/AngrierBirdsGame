@@ -17,7 +17,13 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import io.github.some_example_name.LevelPage;
 import io.github.some_example_name.LevelPage;
+import io.github.some_example_name.SavedLevelPage;
+import io.github.some_example_name.serializationPurpose.BirdDTO;
+import io.github.some_example_name.serializationPurpose.BlockDTO;
+import io.github.some_example_name.serializationPurpose.PigDTO;
+import io.github.some_example_name.serializationPurpose.SerializableLevel;
 
+import java.io.*;
 import java.util.ArrayList;
 
 public class SettingsOverlay extends ScreenAdapter {
@@ -34,6 +40,7 @@ public class SettingsOverlay extends ScreenAdapter {
 
     private ImageButton LoadLevel1_button;
     private ImageButton LoadLevel2_button;
+    private ImageButton LoadLevel3_button;
 
 
     float SCREEN_WIDTH = Gdx.graphics.getWidth();
@@ -119,6 +126,9 @@ public class SettingsOverlay extends ScreenAdapter {
                     Setting_stage.addActor(MuteButton);
                     LoadLevel1_button.remove();
                     LoadLevel2_button.remove();
+                    LoadLevel3_button.remove();
+
+
                 }
 
             }
@@ -139,6 +149,8 @@ public class SettingsOverlay extends ScreenAdapter {
                     MuteButton.remove();
                     Setting_stage.addActor(LoadLevel1_button);
                     Setting_stage.addActor(LoadLevel2_button);
+
+                    Setting_stage.addActor(LoadLevel3_button);
                 }
 
             }
@@ -169,32 +181,59 @@ public class SettingsOverlay extends ScreenAdapter {
 
 
         // LOAD LEVEL 1 BUTTON
-        LoadLevel1_button = ImageButton_create("Load_Game1.png", "Load_Game1.png", 400,150, 0.51f,0.6f);
+        LoadLevel1_button = ImageButton_create("Load_Game1.png", "Load_Game1.png", 400,150, 0.51f,0.7f);
 
+//        LoadLevel1_button.addListener(new ClickListener() {
+//            @Override
+//            public void clicked(InputEvent event, float x, float y) {
+//                System.out.println("CLICKED Load level 1 BUTTON");
+//                game.setScreen( new LevelPage(game,1));
+////               TutorialGame.setScreen(new TutorialGame(TutorialGame));
+////                Setting_stage.clear(); // Clear the settings overlay when close is clicked
+//            }
+//        });
         LoadLevel1_button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("CLICKED Load level 1 BUTTON");
-                game.setScreen( new LevelPage(game));
-//               TutorialGame.setScreen(new TutorialGame(TutorialGame));
-//                Setting_stage.clear(); // Clear the settings overlay when close is clicked
+                SerializableLevel levelData = loadLevel(1);  // Replace 1 with the correct level number
+                if (levelData != null) {
+                    game.setScreen(new SavedLevelPage(game, levelData));
+                }
             }
         });
 
         // LOAD LEVEL 2 BUTTON
-        LoadLevel2_button = ImageButton_create("Load_Game2.png", "Load_Game2.png", 400,150, 0.51f,0.4f);
+        LoadLevel2_button = ImageButton_create("Load_Game2.png", "Load_Game2.png", 400,150, 0.51f,0.5f);
 
+//        LoadLevel2_button.addListener(new ClickListener() {
+//            @Override
+//            public void clicked(InputEvent event, float x, float y) {
+//                System.out.println("CLICKED Load level 2 BUTTON");
+//                game.setScreen( new LevelPage(game,1));
+////               TutorialGame.setScreen(new TutorialGame(TutorialGame));
+////                Setting_stage.clear(); // Clear the settings overlay when close is clicked
+//            }
+//        });
         LoadLevel2_button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("CLICKED Load level 2 BUTTON");
-                game.setScreen( new LevelPage(game));
-//               TutorialGame.setScreen(new TutorialGame(TutorialGame));
-//                Setting_stage.clear(); // Clear the settings overlay when close is clicked
+                SerializableLevel levelData = loadLevel(2);  // Replace 1 with the correct level number
+                if (levelData != null) {
+                    game.setScreen(new SavedLevelPage(game, levelData));
+                }
             }
         });
 
-
+        LoadLevel3_button = ImageButton_create("Load_Game3.png", "Load_Game3.png", 400,150, 0.51f,0.3f);
+        LoadLevel3_button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                SerializableLevel levelData = loadLevel(3);  // Replace 1 with the correct level number
+                if (levelData != null) {
+                    game.setScreen(new SavedLevelPage(game, levelData));
+                }
+            }
+        });
 
 
 //        Table table = new Table();
@@ -206,6 +245,79 @@ public class SettingsOverlay extends ScreenAdapter {
 
 //        Setting_stage.addActor(table);  // Add the table to the Setting_stage
     }
+
+//    public SerializableLevel loadLevel(int levelNumber) {
+//        try (FileInputStream fileIn = new FileInputStream("level" + levelNumber + ".ser");
+//             ObjectInputStream in = new ObjectInputStream(fileIn)) {
+//            return (SerializableLevel) in.readObject();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
+public SerializableLevel loadLevel(int levelNumber) {
+    ArrayList<BirdDTO> birds = new ArrayList<>();
+    ArrayList<PigDTO> pigs = new ArrayList<>();
+    ArrayList<BlockDTO> blocks = new ArrayList<>();
+
+    try (
+        BufferedReader reader = new BufferedReader(new FileReader("level" + levelNumber + ".txt"))) {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            if (line.startsWith("Bird:")) {
+                String[] parts = line.substring(5).split(",");
+                birds.add(new BirdDTO(parts[0], Float.parseFloat(parts[1]), Float.parseFloat(parts[2]),
+                    Float.parseFloat(parts[3]), Float.parseFloat(parts[4]), Integer.parseInt(parts[5]),
+                    Boolean.parseBoolean(parts[6])));
+            } else if (line.startsWith("Pig:")) {
+                String[] parts = line.substring(4).split(",");
+                pigs.add(new PigDTO(parts[0], Float.parseFloat(parts[1]), Float.parseFloat(parts[2]),
+                    Float.parseFloat(parts[3]), Float.parseFloat(parts[4]), Integer.parseInt(parts[5]),
+                    Boolean.parseBoolean(parts[6])));
+            } else if (line.startsWith("Block:")) {
+                String[] parts = line.substring(6).split(",");
+                blocks.add(new BlockDTO(parts[0], Float.parseFloat(parts[1]), Float.parseFloat(parts[2]),
+                    Float.parseFloat(parts[3]), Float.parseFloat(parts[4]), Integer.parseInt(parts[5]),
+                    Boolean.parseBoolean(parts[6])));
+            }
+        }
+
+        System.out.println("Level loaded successfully from text file!");
+    } catch (IOException e) {
+//        e.printStackTrace();
+//        return null;
+        try (
+            BufferedReader reader = new BufferedReader(new FileReader("level" + 3 + ".txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("Bird:")) {
+                    String[] parts = line.substring(5).split(",");
+                    birds.add(new BirdDTO(parts[0], Float.parseFloat(parts[1]), Float.parseFloat(parts[2]),
+                        Float.parseFloat(parts[3]), Float.parseFloat(parts[4]), Integer.parseInt(parts[5]),
+                        Boolean.parseBoolean(parts[6])));
+                } else if (line.startsWith("Pig:")) {
+                    String[] parts = line.substring(4).split(",");
+                    pigs.add(new PigDTO(parts[0], Float.parseFloat(parts[1]), Float.parseFloat(parts[2]),
+                        Float.parseFloat(parts[3]), Float.parseFloat(parts[4]), Integer.parseInt(parts[5]),
+                        Boolean.parseBoolean(parts[6])));
+                } else if (line.startsWith("Block:")) {
+                    String[] parts = line.substring(6).split(",");
+                    blocks.add(new BlockDTO(parts[0], Float.parseFloat(parts[1]), Float.parseFloat(parts[2]),
+                        Float.parseFloat(parts[3]), Float.parseFloat(parts[4]), Integer.parseInt(parts[5]),
+                        Boolean.parseBoolean(parts[6])));
+                }
+            }
+
+            System.out.println("Level loaded successfully from text file!");
+        } catch (IOException e2) {
+            e2.printStackTrace();
+            return null;
+        }
+    }
+
+    return new SerializableLevel(levelNumber, birds, pigs, blocks);
+}
+
 
     public void render(float delta) {
         if(isActive ) {
@@ -223,8 +335,9 @@ public class SettingsOverlay extends ScreenAdapter {
         closeButton.setPosition(Gdx.graphics.getWidth() * 0.65f - closeButton.getWidth()*0.5f, Gdx.graphics.getHeight() *0.8f - closeButton.getHeight() *0.5f);
         LoadGameButton.setPosition(Gdx.graphics.getWidth() * 0.51f - LoadGameButton.getWidth()*0.5f, Gdx.graphics.getHeight() *0.6f - LoadGameButton.getHeight() *0.5f);
         MuteButton.setPosition(Gdx.graphics.getWidth() * 0.51f - MuteButton.getWidth()*0.5f, Gdx.graphics.getHeight() *0.4f - MuteButton.getHeight() *0.5f);
-        LoadLevel1_button.setPosition(Gdx.graphics.getWidth() * 0.51f - LoadLevel1_button.getWidth()*0.5f, Gdx.graphics.getHeight() *0.6f - LoadLevel1_button.getHeight() *0.5f);
-        LoadLevel2_button.setPosition(Gdx.graphics.getWidth() * 0.51f - LoadLevel2_button.getWidth()*0.5f, Gdx.graphics.getHeight() *0.4f - LoadLevel2_button.getHeight() *0.5f);
+        LoadLevel1_button.setPosition(Gdx.graphics.getWidth() * 0.51f - LoadLevel1_button.getWidth()*0.5f, Gdx.graphics.getHeight() *0.7f - LoadLevel1_button.getHeight() *0.5f);
+        LoadLevel2_button.setPosition(Gdx.graphics.getWidth() * 0.51f - LoadLevel2_button.getWidth()*0.5f, Gdx.graphics.getHeight() *0.5f - LoadLevel2_button.getHeight() *0.5f);
+        LoadLevel3_button.setPosition(Gdx.graphics.getWidth() * 0.51f - LoadLevel2_button.getWidth()*0.5f, Gdx.graphics.getHeight() *0.3f - LoadLevel2_button.getHeight() *0.5f);
 
 //        System.out.printf("close button position: %f, %f\n"  ,Gdx.graphics.getWidth() * 0.3f - closeButton.getWidth()*0.5f , Gdx.graphics.getHeight() *0.6f - closeButton.getHeight() *0.5f);
     }

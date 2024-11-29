@@ -11,7 +11,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import io.github.some_example_name.serializationPurpose.BirdDTO;
+import io.github.some_example_name.serializationPurpose.BlockDTO;
+import io.github.some_example_name.serializationPurpose.PigDTO;
+import io.github.some_example_name.serializationPurpose.SerializableLevel;
 
+import java.io.*;
 import java.util.ArrayList;
 
 public class OverlaySaveGame extends ScreenAdapter {
@@ -21,6 +26,7 @@ public class OverlaySaveGame extends ScreenAdapter {
     private ImageButton confirmSaveButton;
     private Boolean isActive = false;
     private Texture saveGameBackground;
+    private LevelPage levelPage;
 
     float SCREEN_WIDTH = Gdx.graphics.getWidth();
     float SCREEN_HEIGHT = Gdx.graphics.getHeight();
@@ -56,7 +62,8 @@ public class OverlaySaveGame extends ScreenAdapter {
         return button;
     }
 
-    public OverlaySaveGame() {
+    public OverlaySaveGame(LevelPage levelpage) {
+        this.levelPage=levelpage;
         batch = new SpriteBatch();
         saveGameBackground = new Texture(Gdx.files.internal("menu_settings2.png"));//save_game_background.png
         saveGameStage = new Stage(new ScreenViewport());
@@ -72,16 +79,93 @@ public class OverlaySaveGame extends ScreenAdapter {
         saveGameStage.addActor(closeButton);
 
         // Create Confirm Save Button
-        confirmSaveButton = createImageButton("confirm_save.png", "confirm_save.png", 400, 100, 0.51f, 0.5f);//"confirm_save.png"
+        confirmSaveButton = createImageButton("confirm_save.png", "Save_game_button.png", 400, 100, 0.51f, 0.5f);//"confirm_save.png"
+//        confirmSaveButton.addListener(new ClickListener() {
+//            @Override
+//            public void clicked(InputEvent event, float x, float y) {
+//                System.out.println("Game Saved!");
+//                closeOverlay();
+//            }
+//        });
         confirmSaveButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("Game Saved!");
-                closeOverlay();
+
+//                SerializableLevel level = new SerializableLevel(
+//                    levelpage.level_numb,  // Replace with the actual level number
+//                    levelpage.birds,
+//                    levelpage.pigs,
+//                    levelpage.blocks
+//                );
+//                saveLevel(level);
+                ArrayList<BirdDTO> birdDTOs = new ArrayList<>();
+                for (Bird bird : levelpage.birds) {
+                    birdDTOs.add(new BirdDTO(
+                        bird.texturePath, bird.getImage().getX(), bird.getImage().getY(), bird.getImage().getWidth(), bird.getImage().getHeight(),
+                        bird.getHealthI(), bird.isDestroyed()
+                    ));
+                }
+                ArrayList<PigDTO> pigDTOs = new ArrayList<>();
+                for (Pig bird : levelpage.pigs) {
+                    pigDTOs.add(new PigDTO(
+                        bird.texturePath, bird.getImage().getX(), bird.getImage().getY(), bird.getImage().getWidth(), bird.getImage().getHeight(),
+                        bird.getHealthI(), bird.isDestroyed()
+                    ));
+                }
+                ArrayList<BlockDTO> blockDTOs = new ArrayList<>();
+                for (Block bird : levelpage.blocks) {
+                    blockDTOs.add(new BlockDTO(
+                        bird.texturePath, bird.getImage().getX(), bird.getImage().getY(), bird.getImage().getWidth(), bird.getImage().getHeight(),
+                        bird.getHealthI(), bird.isDestroyed()
+                    ));
+                }
+//// Repeat for pigs and blocks
+                SerializableLevel level = new SerializableLevel(levelpage.level_numb, birdDTOs, pigDTOs, blockDTOs);
+                saveLevel(level);
+
             }
         });
         saveGameStage.addActor(confirmSaveButton);
     }
+//    public void saveLevel(SerializableLevel level) {
+//        try (
+//            FileOutputStream fileOut = new FileOutputStream("level" + level.levelNumber + ".ser");
+//             ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
+//            out.writeObject(level);
+//            System.out.println("Level saved successfully!");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+public void saveLevel(SerializableLevel level) {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter("level" + level.levelNumber + ".txt"))) {
+        // Write Birds
+        for (BirdDTO bird : level.getBirdDTOs()) {
+            writer.write("Bird:" + bird.texturePath + "," + bird.x + "," + bird.y + "," + bird.width + "," +
+                bird.height + "," + bird.health + "," + bird.isDestroyed);
+            writer.newLine();
+        }
+
+        // Write Pigs
+        for (PigDTO pig : level.getPigDTO()) {
+            writer.write("Pig:" + pig.texturePath + "," + pig.x + "," + pig.y + "," + pig.width + "," +
+                pig.height + "," + pig.health + "," + pig.isDestroyed);
+            writer.newLine();
+        }
+
+        // Write Blocks
+        for (BlockDTO block : level.getBlockDTO()) {
+            writer.write("Block:" + block.texturePath + "," + block.x + "," + block.y + "," + block.width + "," +
+                block.height + "," + block.health + "," + block.isDestroyed);
+            writer.newLine();
+        }
+
+        System.out.println("Level saved successfully to text file!");
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
 
     public void render(float delta) {
         if (isActive) {
