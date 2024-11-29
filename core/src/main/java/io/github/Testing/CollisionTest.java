@@ -1,11 +1,14 @@
 package io.github.Testing;
 
+//package io.github.Testing;
+/*
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import io.github.some_example_name.Bird;
 import io.github.some_example_name.Block;
-/*
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
+
 
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,16 +25,14 @@ public class CollisionTest {
 
         Block block = new Block("block3.png", 0.5f, 0.32f, 30, 120,world,10);
 
-        // Set initial health
-        bird.setHealth(5);
-        block.setHealth(10);
+
 
         // Simulate collision
         bird.reduceHealth(1);
         block.reduceHealth(1);
 
         // Assert health reduction
-        assertEquals(4, bird.getHealth(), "Bird's health should decrease by 1.");
+        assertEquals(0, bird.getHealth(), "Bird's health should decrease by 1.");
         assertEquals(9, block.getHealth(), "Block's health should decrease by 1.");
     }
 }

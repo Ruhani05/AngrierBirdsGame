@@ -25,7 +25,7 @@ public class Block {
     float SCREEN_WIDTH = Gdx.graphics.getWidth();
     float SCREEN_HEIGHT = Gdx.graphics.getHeight();
     public Block(BlockDTO dto, World world) {
-        this(dto.texturePath, (dto.x+dto.width*0.5f)/Gdx.graphics.getWidth(), (dto.y+dto.height*0.5f)/Gdx.graphics.getHeight(), dto.width, dto.height, world, dto.health);
+        this(dto.texturePath, (dto.x+dto.width)/Gdx.graphics.getWidth(), (dto.y+dto.height*0.5f)/Gdx.graphics.getHeight(), dto.width, dto.height, world, dto.health);
         this.isDestroyed = dto.isDestroyed;
     }
     public Block(String texturePath, float x, float y, float width, float height, World world,int initialHealth) {
