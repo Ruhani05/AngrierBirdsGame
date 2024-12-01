@@ -143,6 +143,16 @@ dependencies {
   api "org.mini2Dx:universal-tween-engine:$universalTweenVersion"
   api "space.earlygrey:shapedrawer:$shapeDrawerVersion"
   api "space.earlygrey:simple-graphs:$simpleGraphsVersion"
+   //testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+  //testImplementation 'org.junit.jupiter:junit:4.12'
+  testImplementation 'junit:junit:4.13.2'
+  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+  testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1' // Enables test execution
+  implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion" // Box2D dependency if not already added
+
+  testImplementation 'org.mockito:mockito-core:4.5.1'
+
+
   annotationProcessor "org.projectlombok:lombok:$lombokVersion"
   compileOnly "org.projectlombok:lombok:$lombokVersion"
 

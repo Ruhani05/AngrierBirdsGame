@@ -11,6 +11,7 @@ buildscript {
   dependencies {
     classpath "io.freefair.gradle:lombok-plugin:8.3"
 
+
   }
 }
 
@@ -31,6 +32,15 @@ configure(subprojects) {
   apply plugin: 'java-library'
   apply plugin: 'io.freefair.lombok'
   sourceCompatibility = 17
+  dependencies {
+    //testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1' // Enables test execution
+    implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion" // Box2D dependency if not already added
+    testImplementation 'org.mockito:mockito-core:4.5.1'
+
+  }
 
   // From https://lyze.dev/2021/04/29/libGDX-Internal-Assets-List/
   // The article can be helpful when using assets.txt in your project.
