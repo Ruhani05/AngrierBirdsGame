@@ -1,10 +1,8 @@
 # AngrierBirds
-Member - Ruhani Bhatia 2023450(only member for the 3rd deadline)
-
-Uptill second deadline(worked with 2023237, Harshit Dawara)
 A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
 
 This project was generated with a template including simple application launchers and an `ScreenAdapter` extension that draws a simple GUI on the screen.
+Using the LibGDX framework in JAVA, We designed and implemented an angry birds and pigs shooting game with a graphical interface using advanced OOP principles. Designed UMLs and Use Case Diagrams, used design patterns and serialization to make code modular. 
 
 
 ## HOW TO RUN: 
