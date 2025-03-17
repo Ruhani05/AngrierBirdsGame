@@ -165,7 +165,6 @@ lwjgl3
 
 
 
-"HOPING YOU LIKE OUR GAME" ~ Team "Nah I'd Vim"
 
 
 
