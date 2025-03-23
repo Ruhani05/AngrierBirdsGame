@@ -14,8 +14,9 @@ Using the LibGDX framework in JAVA, We designed and implemented an angry birds a
 	3. Save game at any point of time.
  	4. Load the last saved game corresponding to any level, before starting or while playing any level.
   	5. Access Settings icon from home page or pause menu while playing any level.
-        6. Click bird and catapault aim using dotted trajectory and release.
-        7. Next Bird jumps on the catapault to repeat till you win or lose or quit:)
+           Game play:
+        a. Click bird at catapault aim using dotted trajectory and release.
+        b. Next Bird jumps on the catapault to repeat till you win or lose or quit:)
 
 
 [Click to watch the demo](https://github.com/Ruhani05/AngrierBirdsGame/issues/1#issue-2941255248)
