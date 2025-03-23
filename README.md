@@ -8,7 +8,7 @@ Using the LibGDX framework in JAVA, We designed and implemented an angry birds a
 ## HOW TO RUN: 
     Open the project in IDEA and run from there, using the Lwjgl3Launcher file in the lwjgl3 directory.
 
-## Diagrams & Use Cases:
+## Diagrams, Demo video & Use Cases:
 Are present in the AngryBirds2027 Folder Itself as PDF files.
 
 
