@@ -12,8 +12,8 @@ Using the LibGDX framework in JAVA, We designed and implemented an angry birds a
 	1. Choose among levels.
  	2. Pause/Resume/Restart/Quit game anytime.
 	3. Save game at any point of time.
- 	4. Load game the last saved game corresponding to every level.
-  	5. Acess Settings icon from home page or pause menu while playing any level.
+ 	4. Load the last saved game corresponding to any level, before starting or while playing any level.
+  	5. Access Settings icon from home page or pause menu while playing any level.
 
 
 [Click to watch the demo](https://github.com/Ruhani05/AngrierBirdsGame/issues/1#issue-2941255248)
