@@ -4,6 +4,10 @@ A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://git
 This project was generated with a template including simple application launchers and an `ScreenAdapter` extension that draws a simple GUI on the screen.
 Using the LibGDX framework in JAVA, We designed and implemented an angry birds and pigs shooting game with a graphical interface using advanced OOP principles. Designed UMLs and Use Case Diagrams, used design patterns and serialization to make code modular. 
 
+## DEMO VIDEO:
+
+[Click to watch the demo](https://github.com/Ruhani05/AngrierBirdsGame/issues/1#issue-2941255248)
+
 
 ## HOW TO RUN: 
     Open the project in IDEA and run from there, using the Lwjgl3Launcher file in the lwjgl3 directory.
@@ -18,8 +22,6 @@ Using the LibGDX framework in JAVA, We designed and implemented an angry birds a
         a. Click bird at catapault aim using dotted trajectory and release.
         b. Next Bird jumps on the catapault to repeat till you win or lose or quit:)
 
-
-[Click to watch the demo](https://github.com/Ruhani05/AngrierBirdsGame/issues/1#issue-2941255248)
 
 ## Diagrams, Demo video & Use Cases:
 Are present in the AngryBirds2027 Folder Itself as PDF files.
