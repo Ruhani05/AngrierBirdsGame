@@ -40,7 +40,14 @@ Are present in the AngryBirds2027 Folder Itself as PDF files.
 ## General Instructions to Play the Game:
     On the Start Game Click on Play Button, or Exit Button, according to your own Choice.
 
-    After CLicking Start, you would be redirected to a level selection page. Selct level1 or level2 or level3. inside each level pause menu has options to resume,restart,exit,save,settings. settings can load game. Each level can has its own saved game, therefore we can store a game at any level and will be restored at that level.
+    After CLicking Start, you would be redirected to a level selection page.
+    
+    Selct level1 or level2 or level3. 
+    
+    Inside each level pause menu has options to resume,restart,exit,save,settings. 
+    Settings can load game. 
+    
+    Each level can has its own saved game, therefore we can store a game at any level and will be restored at that level.
 
 
 ## Platforms
